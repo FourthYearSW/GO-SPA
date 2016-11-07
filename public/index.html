@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<title>Test Web App POST</title>
-	<script src="libs/angular.min.js"></script>
-	<script src="js/controller.js"></script>
-	<script src="js/app.js"></script>
-	<link rel="stylesheet" href="css/style.css">
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"> 
+    <!--<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script> -->
 </head>
-	<body ng-app="TechNewsWebApp" ng-controller="testPostController">
-		<div class="container" style="border: solid 2px black;">
-			<form method="post" ng-submit="SubmitTestPost()" name="testpost" id="testpost"> 
-				<h3 style="text-align: center;padding-bottom: 10px;">This is a Test Message ====> To GO...</h3>
-				<div class="form-group row">
-					<label for="firstname" class="col-sm-3 col-form-label">Test Message:</label>
-					<div class="col-sm-7">
-						<input type="text" class="form-control" id="message" name="message" placeholder="Test Message">
-					</div>
-				</div>
-				<div id="submitForm" name="submitForm" style="text-align: center; margin-bottom: 20px;">
-					<button class="btn btn-primary">Submit</button>
-				</div>
+<body ng-app="postApp" ng-controller="postController">
+	<div class="container">
+		<div class="col-sm-8 col-sm-offset-2">
+			<h1>Test post to Go ==> </h1>
+			
+			<!-- FORM -->
+			<!--<form name="testForm" ng-submit="submitForm()">
+			<div class="form-group">
+				<label>Name</label>
+				<input type="text" name="name" class="form-control" ng-model="user.name">
+				<span ng-show="name">{{ name }}</span>
+			</div>-->
+
+			<form name="testForm" method="POST" action="webapp.go">
+			<div class="form-group">
+				<label>Name</label>
+				<input type="text" name="name" class="form-control">
+			<button type="submit" class="btn btn-primary">Submit</button>
+			
 			</form>
-		<div>
-	</body>
+		</div>
+	</div>
+</body>
 </html>
