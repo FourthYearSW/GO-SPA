@@ -1,34 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="appname">
 <head>
+
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"> 
-    <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+	<script src="app.js"></script>
 </head>
-	<body>
-		<div class="container">
-			<div class="jumbotron">
-				<h1 style=" font-family: Century Gothic;">News Discussion Forum</h1>
-			</div>
-			<p>(Below is an example of what's returned by The API which for demo purposes, is a Placeholder for the News Feed...)</p>
-			<blockquote style="font-style: italic; 
-							   font-weight: bold; 							   						   
-							   font-size: 25px;
-							   color: grey;
-							   margin: 50px 0px 50px 0px;">"Donald Trump is the new P.O.T.U.S........"
-			</blockquote>
-			<div class="form-group">
-				<span class="glyphicon glyphicon-user"></span> User [Will]
-				
-				<label for="comment">Comment on this Post:</label>
-				<textarea class="form-control" rows="5" id="comment"></textarea>
-				<button style="margin: 20px 0px 0px 0px;" type="button" class="btn btn-primary btn-lg">Post Comment</button>	
-				<button style="margin: 20px 0px 0px 20px;" class="btn btn-default">
-					<span class="glyphicon glyphicon-thumbs-up"></span>
-				</button>
-				<button style="margin: 20px 0px 0px 0px;" class="btn btn-default">
-					<span class="glyphicon glyphicon-thumbs-down"></span>
-				</button>
-			</div>
-		</div>
+
+	<body ng-controller="appCtrl">
+	
+		<h1>Name is {{name.text}}</h1>
+		<h2>surname is {{surname}}</h2>
+
 	</body>
+	
 </html>
