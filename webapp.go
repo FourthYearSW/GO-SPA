@@ -13,29 +13,23 @@ import (
 func main() {
 
 	m := macaron.Classic()
+
 	m.Use(macaron.Renderer())
 
-	// Basic Hello world
-	m.Get("/hello", func() string {
-		return "Hello world!"
-	})
-
-	m.Get("/hello", func(resp http.ResponseWriter, req *http.Request) {
-		// resp and req are injected by Macaron
-		resp.WriteHeader(200) // HTTP 200
-	})
-
-	// Basic Hello world
-	m.Get("/helloandrej", func() string {
-		return "Hello Andrej"
-	})
-
-	// Using the template from template folder
-	m.Get("/helloagain", func(ctx *macaron.Context) {
-		ctx.Data["Name"] = "Person"
+	// Get the template page
+	m.Get("/", func(ctx *macaron.Context) {
+		ctx.Data["Name"] = "Andrej"
 		ctx.HTML(200, "hello") // 200 is the response code.
 	})
 
-	m.Run(8080) // Start Web Server on port 8080
+	// Req.body will recieve the post
+	m.Get("/hello", func(resp http.ResponseWriter, req *http.Request) {
+		// resp and req are injected by Macaron
+		resp.WriteHeader(200) // HTTP 200
+
+	})
+
+	// Start Web Server on port 8080
+	m.Run(8080)
 
 }
