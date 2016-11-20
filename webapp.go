@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"time"
 
-	"gopkg.in/macaron.v1"
+	macaron "gopkg.in/macaron.v1"
 )
 
 func main() {
@@ -24,10 +24,15 @@ func main() {
 	// For testing purposes, uses the 'timer.tmpl'
 	m.Get("/timer", func(ctx *macaron.Context) {
 		ctx.Data["timer"] = "Countdown in progress..."
-		countdown() //  Trying to figure out how this will work with html page
+		countdown()
 		ctx.HTML(200, "timer")
 	})
+
+	m.Get("/AjaxTimer", countdown)
+
 	m.Run(8080)
+
+	// countdown() //  Trying to figure out how this will work with html page
 }
 
 // Countdown Timer Adapted from https://play.golang.org/p/jl5VwaurB5
@@ -39,13 +44,21 @@ func countdown() {
 
 	// See http://golang.org/pkg/time/#Time.Format
 	const layout = "15:04:05"
-	t := time.Now()
-	fmt.Println(t.Format(layout))
 
-	timer := time.NewTimer(*duration)
+	// Could add an infinite for loop, that will continue to get new stories after each 60 mins has finished.
+	for {
+		// Add new API Call function or something here and then start the timer from that moment
+		t := time.Now()
+		fmt.Println("Start new Timer...")
+		fmt.Println(t.Format(layout))
 
-	<-timer.C
-	fmt.Println("1 Hour is up (obvious shorter test time of 5 seconds set for testing), need to reset and make new call to API...")
-	t = time.Now()
-	fmt.Println(t.Format(layout))
+		timer := time.NewTimer(*duration)
+
+		<-timer.C
+
+		fmt.Println("1 Hour is up (obvious shorter test time of 5 seconds set for testing), need to reset and make new call to API...")
+		t = time.Now()
+		fmt.Println(t.Format(layout))
+	}
+
 }
