@@ -3,6 +3,8 @@
 <head>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"> 
     <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="js/ajax.js"></script>
 </head>
 	<body>
 		<div class="container">
@@ -16,6 +18,14 @@
 							   color: grey;
 							   margin: 50px 0px 50px 0px;">"Donald Trump is the new P.O.T.U.S........"
 			</blockquote>
+
+			<!-- This div will contain the timer and be called using an Ajax Call in jquery -->
+			<div style="border: solid 1px black; float: right; width: 350px;">
+				<h3 id="responseHead"></h3>
+				<button>Get Test from '/test'</button>
+			</div>
+			<!-- End Div -->
+			
 			<div class="form-group">
 				<span class="glyphicon glyphicon-user"></span> User [Will]
 				

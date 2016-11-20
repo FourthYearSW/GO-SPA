@@ -28,7 +28,13 @@ func main() {
 		ctx.HTML(200, "timer")
 	})
 
+	// Work in progress...
 	m.Get("/AjaxTimer", countdown)
+
+	// Returns this string when index.html makes Ajax call...
+	m.Get("/test", func() string {
+		return "Ajax Call Successful....."
+	})
 
 	m.Run(8080)
 
