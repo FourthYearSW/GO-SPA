@@ -11,6 +11,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
+	macaron "gopkg.in/macaron.v1"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -26,6 +27,22 @@ func init() {
 }
 
 func main() {
+
+	m := macaron.Classic()
+	m.Use(macaron.Renderer())
+
+	// Basic Hello world
+	m.Get("/hello", func() string {
+		return "Hello world!"
+	})
+
+	// Using the template from template folder
+	m.Get("/helloagain", func(ctx *macaron.Context) {
+		ctx.Data["Name"] = "Person"
+		ctx.HTML(200, "hello") // 200 is the response code.
+	})
+
+	m.Run(8080) // Start Web Server on port 8080
 
 	port := os.Getenv("PORT")
 	println("Hello")
