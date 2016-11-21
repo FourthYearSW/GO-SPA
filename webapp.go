@@ -4,34 +4,22 @@
 
 package main
 
-import (
-	"net/http"
-
-	"gopkg.in/macaron.v1"
-)
+import "gopkg.in/macaron.v1"
 
 func main() {
-
 	m := macaron.Classic()
-
 	m.Use(macaron.Renderer())
 
-	// Get the template page from the templates folder
 	m.Get("/", func(ctx *macaron.Context) {
+		//ctx.Data["Name"] = "christy"
 
-		//ctx.Data["Name"] = "Andrej"
-		ctx.HTML(200, "hello") // 200 is the response code.
-
-	})
-
-	// Req.body will recieve the post
-	m.Get("/hello", func(resp http.ResponseWriter, req *http.Request) {
-		// resp and req are injected by Macaron
-		resp.WriteHeader(200) // HTTP 200
+		// Give a status code and the partial html file you want to serve
+		ctx.HTML(200, "header")
+		ctx.HTML(200, "body")
+		ctx.HTML(200, "footer")
 
 	})
 
 	// Start Web Server on port 8080
-	m.Run(8080)
-
-}
+	m.Run(8090)
+} // End main
