@@ -1,8 +1,8 @@
 var appname = angular.module('appname', []);
 
-appname.controller('postCtrl', function($scope, $http){
+appname.controller('postCtrl', function($scope){
 
-     $scope.name = {};
+    $scope.name = {};
 
     $scope.firstName = { text: 'christy' };
     $scope.surname = 'madden';

@@ -1,4 +1,52 @@
-<body>
-    <!--<h1>HELLO! {{.Name}}</h1>-->
-    <p>Here is the partial html page body.html</p>
-</body>
+<body ng-app="discussionApp" ng-controller="postCtrl">
+
+		<div class="container">
+			<div class="jumbotron">
+				<h1 style=" font-family: Century Gothic;">News Discussion Forum</h1>
+			</div>
+
+			<p>(Below is an example of what's returned by The API which for demo purposes, is a Placeholder for the News Feed...)</p>
+
+			<blockquote style="font-style: italic; 
+							   font-weight: bold; 							   						   
+							   font-size: 25px;
+							   color: grey;
+							   margin: 50px 0px 50px 0px;">"Donald Trump is the new P.O.T.U.S........"
+			</blockquote>
+
+			<div class="form-group">
+
+				<span class="glyphicon glyphicon-user"></span> User [Will]
+				
+				<label for="comment">Comment on this Post:</label>
+				
+				<!--  =====  Form for posting data to server  =====  -->
+				<form id="postCommentForm" name="userForm" ng-submit="submitForm()">
+					
+					<!--  =====  Tell the text area what form it belongs to  =====  -->
+					<textarea class="form-control" rows="5" id="comment" ng-model="comment" form="postCommentForm"></textarea>
+
+				</form>
+
+				<!--  =====  Submit button  =====  -->
+				<button type="submit" style="margin: 20px 0px 0px 0px;" type="button" class="btn btn-primary btn-lg">Post Comment</button>	
+
+				<!--  ===== Like / Dislike buttons  =====  -->
+				<button style="margin: 20px 0px 0px 20px;" class="btn btn-default">
+					<span class="glyphicon glyphicon-thumbs-up"></span>
+				</button>
+
+				<button style="margin: 20px 0px 0px 0px;" class="btn btn-default">
+					<span class="glyphicon glyphicon-thumbs-down"></span>
+				</button>
+
+			</div>
+
+			 <div>
+				<label>Name:</label>
+				<input type="text" ng-model="yourName" placeholder="Enter a name here">
+				<hr>
+
+			</div>
+		</div>
+	</body>

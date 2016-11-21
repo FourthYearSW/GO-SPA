@@ -11,7 +11,6 @@ func main() {
 	m.Use(macaron.Renderer())
 
 	m.Get("/", func(ctx *macaron.Context) {
-		//ctx.Data["Name"] = "christy"
 
 		// Give a status code and the partial html file you want to serve
 		ctx.HTML(200, "header")
