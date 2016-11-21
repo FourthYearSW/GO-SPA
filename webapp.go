@@ -28,21 +28,18 @@ func main() {
 		ctx.HTML(200, "timer")
 	})
 
-	// Work in progress...
-	m.Get("/AjaxTimer", countdown)
-
 	// Returns this string when index.html makes Ajax call...
 	m.Get("/test", func() string {
-		return "Ajax Call Successful....."
+		str := countdown()
+		return str
 	})
 
 	m.Run(8080)
-
-	// countdown() //  Trying to figure out how this will work with html page
+	// countdown()
 }
 
 // Countdown Timer Adapted from https://play.golang.org/p/jl5VwaurB5
-func countdown() {
+func countdown() string {
 	// Create a pointer named duration
 	// See http://golang.org/pkg/flag/
 	var duration = flag.Duration("duration", 5*time.Second, "set timer duration, for example 60s, 20m, .5h, or 1d")
@@ -65,6 +62,7 @@ func countdown() {
 		fmt.Println("1 Hour is up (obvious shorter test time of 5 seconds set for testing), need to reset and make new call to API...")
 		t = time.Now()
 		fmt.Println(t.Format(layout))
-	}
 
+		return t.Format(layout)
+	}
 }
