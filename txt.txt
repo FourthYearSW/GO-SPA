@@ -52,3 +52,5 @@
 			</div>
 		</div>
 	</body>
+
+	<h6>Hello {{.Name}}</h6>

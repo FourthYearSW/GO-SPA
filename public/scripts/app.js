@@ -1,9 +1,12 @@
 var appname = angular.module('appname', []);
 
-appname.controller('appCtrl', ['$scope',
-  function($scope) {
-    $scope.name = { text: 'christy' };
+appname.controller('postCtrl', function($scope, $http){
+
+     $scope.name = {};
+
+    $scope.firstName = { text: 'christy' };
     $scope.surname = 'madden';
-}]);
+
+});
 
 // URL is localhost and port number, then the path of the file data is being sent to

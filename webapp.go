@@ -16,10 +16,12 @@ func main() {
 
 	m.Use(macaron.Renderer())
 
-	// Get the template page
+	// Get the template page from the templates folder
 	m.Get("/", func(ctx *macaron.Context) {
-		ctx.Data["Name"] = "Andrej"
+
+		//ctx.Data["Name"] = "Andrej"
 		ctx.HTML(200, "hello") // 200 is the response code.
+
 	})
 
 	// Req.body will recieve the post
