@@ -1,1 +1,1 @@
-web: FinalYearProject -p $PORT
+web: GO-SPA -p $PORT
