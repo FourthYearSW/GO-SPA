@@ -1,0 +1,33 @@
+
+ .navbar.transparent.navbar-inverse .navbar-inner {
+   background: rgba(0,0,0,0.4);
+}
+header {
+  position: absolute;
+    bottom: 8px;
+    left: 10px;
+    right:650px;
+    font-size: 15px;
+    color: #f4c842;
+    }
+     
+body{
+    background: url("homeImg.jpg")no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;  
+}
+
+h1 {
+  text-align: left;
+  text-transform: uppercase;
+  margin: 0;
+  font-size: 3.5rem;
+  white-space: wrap;
+}
+p {
+  text-align: left;
+  margin: 0;
+  font-size: 1.5rem;
+}

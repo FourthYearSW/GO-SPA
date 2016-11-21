@@ -22,7 +22,7 @@ var tpl *template.Template
 var mongoConnection, err = newMongoConnection()
 
 func init() {
-	tpl = template.Must(template.ParseGlob("public/templates/index.html"))
+	tpl = template.Must(template.ParseGlob("public/index.html"))
 }
 
 func main() {
@@ -55,7 +55,7 @@ func display(w http.ResponseWriter, req *http.Request) {
 
 func newMongoConnection() (*mgo.Session, error) {
 	// Connect to our local mongo
-	s, err := mgo.Dial("mongodb://test:test@ds029585.mlab.com:29585/heroku_5r938bhv")
+	s, err := mgo.Dial("mongodb://tester:tester@ds029585.mlab.com:29585/heroku_5r938bhv")
 
 	// Check if connection error, is mongo running?
 	if err != nil {
@@ -112,7 +112,7 @@ func loginHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func loginValidation(username string, password string) bool {
-	c := mongoConnection.DB("heroku_b7pltg02").C("Users")
+	c := mongoConnection.DB("heroku_5r938bhv").C("Users")
 	result := User{}
 	err = c.Find(bson.M{"username": username}).Select(bson.M{"username": 1, "password": 1, "_id": 0}).One(&result)
 	if err != nil {
@@ -166,7 +166,7 @@ func serveResource(w http.ResponseWriter, req *http.Request) {
 // used to make connection to mongoDB database
 
 func insert(a User) {
-	c := mongoConnection.DB("heroku_b7pltg02").C("Users")
+	c := mongoConnection.DB("heroku_5r938bhv").C("Users")
 	err = c.Insert(&User{a.Name, a.Username, a.Password, a.Email})
 	if err != nil {
 		log.Fatal(err)
