@@ -22,16 +22,18 @@ var tpl *template.Template
 var mongoConnection, err = newMongoConnection()
 
 func init() {
-	tpl = template.Must(template.ParseGlob("public/index.html"))
+	tpl = template.Must(template.ParseGlob("public/templates/index.html"))
 }
 
 func main() {
 
 	port := os.Getenv("PORT")
-
+	println("Hello")
 	r := mux.NewRouter()
 	r.HandleFunc("/", display)
-	r.HandleFunc("/register", Register)
+	println("Dsiplay")
+	r.HandleFunc("/Register", Register)
+	println("Register")
 	r.HandleFunc("/login", loginHandler)
 	http.Handle("/", r)
 	http.HandleFunc("/css/", serveResource)
@@ -57,10 +59,13 @@ func newMongoConnection() (*mgo.Session, error) {
 	// Connect to our local mongo
 	s, err := mgo.Dial("mongodb://tester:tester@ds029585.mlab.com:29585/heroku_5r938bhv")
 
+	println("connection")
 	// Check if connection error, is mongo running?
 	if err != nil {
 		panic(err)
+		println("connection err1")
 	}
+	println("connection err2")
 	return s, err
 }
 
@@ -89,6 +94,7 @@ func Register(w http.ResponseWriter, req *http.Request) {
 	if a.Username != "" || a.Password != "" || a.Email != "" || a.Name != "" {
 		insert(a)
 	}
+	println("User created")
 }
 func loginHandler(w http.ResponseWriter, req *http.Request) {
 	username := req.FormValue("username")
@@ -105,6 +111,7 @@ func loginHandler(w http.ResponseWriter, req *http.Request) {
 		session.Save(req, w)
 		//}
 		http.Redirect(w, req, "/", 302)
+		println("User Login")
 	} else {
 		fmt.Println("Invalid login")
 		// TODO: notify user of invalid username password
@@ -121,8 +128,10 @@ func loginValidation(username string, password string) bool {
 	}
 	if result.Username == username && result.Password == password {
 		fmt.Println("Connection succesful")
+		println("User Login yup")
 		return true
 	} else {
+		println("User Login nope")
 		return false
 	}
 }
