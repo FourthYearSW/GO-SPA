@@ -2,10 +2,18 @@
 	"ImportPath": "GO-SPA",
 	"GoVersion": "go1.7",
 	"GodepVersion": "v75",
+	"Packages": [
+		"./..."
+	],
 	"Deps": [
 		{
 			"ImportPath": "git.apache.org/thrift.git/lib/go/thrift",
 			"Rev": "84d6af4cf903571319e0ebddd7beb12bc93fb752"
+		},
+		{
+			"ImportPath": "github.com/geekypanda/httpcache",
+			"Comment": "v0.0.1-11-g76ba6c6",
+			"Rev": "76ba6c68462ae362cda7564c44492b95322b363a"
 		},
 		{
 			"ImportPath": "github.com/gorilla/context",
@@ -64,13 +72,128 @@
 			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
 		},
 		{
+			"ImportPath": "github.com/imdario/mergo",
+			"Comment": "0.2.2-6-g50d4dbd",
+			"Rev": "50d4dbd4eb0e84778abe37cefef140271d96fade"
+		},
+		{
+			"ImportPath": "github.com/iris-contrib/formBinder",
+			"Rev": "023b47796b500a9a9407e81cbf1cf5ebf45718e0"
+		},
+		{
+			"ImportPath": "github.com/iris-contrib/letsencrypt",
+			"Comment": "v4",
+			"Rev": "1a3e5c619a13b307df3b1b4da7cb7e57d2e156dd"
+		},
+		{
+			"ImportPath": "github.com/iris-contrib/websocket",
+			"Rev": "cc9f1712095295a828e9a2efaef388d30b9c7760"
+		},
+		{
+			"ImportPath": "github.com/kataras/go-errors",
+			"Rev": "0f977b82cc78d5d31bb75fb6f903ad9e852c8bbd"
+		},
+		{
+			"ImportPath": "github.com/kataras/go-fs",
+			"Rev": "c029e113d9faaf558b730f06041c8bf9545a3502"
+		},
+		{
+			"ImportPath": "github.com/kataras/go-options",
+			"Comment": "v0.0.1",
+			"Rev": "23b556c1b935c594ec6d71ff81ead4dbeec3aa8d"
+		},
+		{
+			"ImportPath": "github.com/kataras/go-serializer",
+			"Rev": "0bd874a15c70db74ef2e668e5eeda27041f03b81"
+		},
+		{
+			"ImportPath": "github.com/kataras/go-sessions",
+			"Rev": "5fbb60d99b3cd100a2ae586cb49474368cebab58"
+		},
+		{
+			"ImportPath": "github.com/kataras/go-template",
+			"Rev": "457f21178102f4688603eccbb4f2e8d5ae1023bf"
+		},
+		{
+			"ImportPath": "github.com/kataras/go-template/html",
+			"Rev": "457f21178102f4688603eccbb4f2e8d5ae1023bf"
+		},
+		{
+			"ImportPath": "github.com/kataras/go-websocket",
+			"Rev": "188e6bbd55486e22f0ddc3f013105c518548fbbb"
+		},
+		{
 			"ImportPath": "github.com/kataras/iris",
 			"Rev": "619a54a9f2378ee3e4b85d47394dcfd5168650d1"
+		},
+		{
+			"ImportPath": "github.com/kataras/iris/utils",
+			"Rev": "619a54a9f2378ee3e4b85d47394dcfd5168650d1"
+		},
+		{
+			"ImportPath": "github.com/klauspost/compress/flate",
+			"Comment": "v1.2",
+			"Rev": "e3b7981a12dd3cab49afa1d3a50e715846f23732"
+		},
+		{
+			"ImportPath": "github.com/klauspost/compress/gzip",
+			"Comment": "v1.2",
+			"Rev": "e3b7981a12dd3cab49afa1d3a50e715846f23732"
+		},
+		{
+			"ImportPath": "github.com/klauspost/compress/zlib",
+			"Comment": "v1.2",
+			"Rev": "e3b7981a12dd3cab49afa1d3a50e715846f23732"
+		},
+		{
+			"ImportPath": "github.com/klauspost/cpuid",
+			"Comment": "v1.0",
+			"Rev": "09cded8978dc9e80714c4d85b0322337b0a1e5e0"
+		},
+		{
+			"ImportPath": "github.com/klauspost/crc32",
+			"Comment": "v1.1",
+			"Rev": "cb6bfca970f6908083f26f39a79009d608efd5cd"
+		},
+		{
+			"ImportPath": "github.com/valyala/bytebufferpool",
+			"Rev": "e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7"
 		},
 		{
 			"ImportPath": "github.com/valyala/fasthttp",
 			"Comment": "v20160617-77-g1913bde",
 			"Rev": "1913bdea45d5d9515c6b9433683bfc8950402389"
+		},
+		{
+			"ImportPath": "github.com/valyala/fasthttp/fasthttpadaptor",
+			"Comment": "v20160617-77-g1913bde",
+			"Rev": "1913bdea45d5d9515c6b9433683bfc8950402389"
+		},
+		{
+			"ImportPath": "github.com/valyala/fasthttp/fasthttputil",
+			"Comment": "v20160617-77-g1913bde",
+			"Rev": "1913bdea45d5d9515c6b9433683bfc8950402389"
+		},
+		{
+			"ImportPath": "github.com/valyala/fasthttp/stackless",
+			"Comment": "v20160617-77-g1913bde",
+			"Rev": "1913bdea45d5d9515c6b9433683bfc8950402389"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/acme",
+			"Rev": "ede567c8e044a5913dad1d1af3696d9da953104c"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/acme/autocert",
+			"Rev": "ede567c8e044a5913dad1d1af3696d9da953104c"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "4971afdc2f162e82d185353533d3cf16188a9f4e"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context/ctxhttp",
+			"Rev": "4971afdc2f162e82d185353533d3cf16188a9f4e"
 		},
 		{
 			"ImportPath": "gopkg.in/mgo.v2",
