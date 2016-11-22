@@ -2,22 +2,23 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"strings"
-	"encoding/json"
-	"io/ioutil"
-	"github.com/valyala/fasthttp"
+
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
-	"github.com/kataras/iris"
 	"github.com/guardian/gocapiclient"
 	"github.com/guardian/gocapiclient/queries"
+	"github.com/kataras/iris"
+	"github.com/valyala/fasthttp"
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 // all session code adapted from http://www.gorillatoolkit.org/pkg/sessions
@@ -47,13 +48,13 @@ func main() {
 	}
 
 	// Andrej
-		api := iris.New()
+	api := iris.New()
 
 	api.Static("/*", "./public/*", 1)
 
 	api.Get("/", search)
 
-	api.Get("/mypath", func(ctx *iris.Context){
+	api.Get("/mypath", func(ctx *iris.Context) {
 		ctx.Write("Hello from the server on path /mypath")
 	})
 
@@ -65,8 +66,6 @@ func main() {
 
 	api.Get("/search", getpage)
 
-
-
 	//client := gocapiclient.NewGuardianContentClient("https://content.guardianapis.com/", "b1b1f668-8a1f-40ec-af20-01687425695c")
 	//searchQuery(client, GuardianAPI{})
 
@@ -75,18 +74,17 @@ func main() {
 
 	// Handler API
 
-
 	// to use a custom server you have to call .Build after
 	// route, sessions, templates, websockets, ssh... before server's listen
 	api.Build()
 
 	/*
-	ln, err := net.Listen("tcp4", "0.0.0.0:9999")
-	if err != nil{
-		panic(err)
-	}
+		ln, err := net.Listen("tcp4", "0.0.0.0:9999")
+		if err != nil{
+			panic(err)
+		}
 
-	iris.Serve(ln)
+		iris.Serve(ln)
 	*/
 
 	// create our custom fasthttp server and assign the Handler/Router
@@ -95,41 +93,44 @@ func main() {
 	// Andrej
 
 }
+
 // Andrej
 
-type page struct{
+type page struct {
 	Title string
-	Host string
-	JObj string
-	Text string
+	Host  string
+	JObj  string
+	Text  string
 }
 
-type GuardianAPI struct{
-	id string
-	title string
+type GuardianAPI struct {
+	id     string
+	title  string
 	weburl string
 	apiurl string
-	body string
+	body   string
 }
 
-type JsonObj struct{
-	by string
+type JsonObj struct {
+	by          string
 	descendants string
-	id int
-	kids []int
-	score int
-	text string
-	time int
-	title string
-	Type string
-	url string
+	id          int
+	kids        []int
+	score       int
+	text        string
+	time        int
+	title       string
+	Type        string
+	url         string
 }
 
-func getpage(ctx *iris.Context){
+func getpage(ctx *iris.Context) {
 
 	// Retrieving json object from HackerNews
 	resp, err := http.Get("https://hacker-news.firebaseio.com/v0/item/160705.json?print=pretty")
-	if err != nil{panic(err.Error())}
+	if err != nil {
+		panic(err.Error())
+	}
 	body, err := ioutil.ReadAll(resp.Body)
 	jsonstring := fmt.Sprintf("%s", body)
 	var f interface{}
@@ -144,17 +145,35 @@ func getpage(ctx *iris.Context){
 		switch vv := v.(type) {
 		case string:
 			fmt.Println(k, "is string", vv)
-			if k == "title" {j.title = vv}
-			if k == "type" {j.Type = vv}
-			if k == "by" {j.by = vv}
-			if k == "descendants" {j.descendants = vv}
-			if k == "text" {j.text = vv}
-			if k == "url" {j.url = vv}
+			if k == "title" {
+				j.title = vv
+			}
+			if k == "type" {
+				j.Type = vv
+			}
+			if k == "by" {
+				j.by = vv
+			}
+			if k == "descendants" {
+				j.descendants = vv
+			}
+			if k == "text" {
+				j.text = vv
+			}
+			if k == "url" {
+				j.url = vv
+			}
 		case int:
 			fmt.Println(k, "is int", vv)
-			if k == "score" {j.score = vv}
-			if k == "time" {j.time = vv}
-			if k == "id" {j.id = vv}
+			if k == "score" {
+				j.score = vv
+			}
+			if k == "time" {
+				j.time = vv
+			}
+			if k == "id" {
+				j.id = vv
+			}
 		case []interface{}:
 			fmt.Println(k, "is an array:")
 			for u := range vv {
@@ -167,7 +186,7 @@ func getpage(ctx *iris.Context){
 
 	println("Print something")
 	println(j.title)
-	for u := range j.kids{
+	for u := range j.kids {
 		fmt.Println("j.kids -> ", u)
 	}
 	ctx.Next()
@@ -175,38 +194,42 @@ func getpage(ctx *iris.Context){
 	ctx.Render("index.html", page{j.title, ctx.HostString(), jsonstring, j.text})
 }
 
-func myhandler(c *iris.Context){
+func myhandler(c *iris.Context) {
 	c.Write("From %s. Implementation of handlerFunction", c.PathString())
 }
 
-type UserApi struct{*iris.Context}
+type UserApi struct{ *iris.Context }
+
 // GET /users
-func (u UserApi) Get(){
+func (u UserApi) Get() {
 	//u.Write("Get from /users")
 	u.HTML(iris.StatusOK, "<h3>Get all from users</h3>")
 	//u.Redirect("https://hacker-news.firebaseio.com/v0/item/121003.json?print=pretty", iris.StatusOK)
 }
 
-func myUsersMiddleware1(ctx *iris.Context){
+func myUsersMiddleware1(ctx *iris.Context) {
 	println("From User middleware 1")
 	ctx.Next()
 }
 
-func myUsersMiddleware2(ctx *iris.Context){
+func myUsersMiddleware2(ctx *iris.Context) {
 	println("From User middleware 2")
 	ctx.Next()
 }
 
 // Retrieving json object from HackerNews and printing it into page
 // 1) initialize structure with
-type HackerNews struct{*iris.Context}
-func (u HackerNews) Get(){
+type HackerNews struct{ *iris.Context }
+
+func (u HackerNews) Get() {
 	//u.Write("Get from /users")
 	//u.HTML(iris.StatusOK, "<h3>Get all from users</h3>")
 	//u.Redirect("https://hacker-news.firebaseio.com/v0/item/121003.json?print=pretty", iris.StatusOK)
 	//u.Request.SetRequestURI("https://hacker-news.firebaseio.com/v0/item/121003.json?print=pretty")
 	resp, err := http.Get("http://content.guardianapis.com/search?q=tech%20AND%20technology&section=technology&page=1&page-size=1&order-by=newest&api-key=b1b1f668-8a1f-40ec-af20-01687425695c")
-	if err != nil{panic(err.Error())}
+	if err != nil {
+		panic(err.Error())
+	}
 	body, err := ioutil.ReadAll(resp.Body)
 	u.Write("%s", body)
 }
@@ -293,13 +316,14 @@ func itemQuery(client *gocapiclient.GuardianContentClient) {
 }
 */
 
-func search(ctx *iris.Context){
+func search(ctx *iris.Context) {
 	client := gocapiclient.NewGuardianContentClient("https://content.guardianapis.com/", "b1b1f668-8a1f-40ec-af20-01687425695c")
 	g := &GuardianAPI{}
 	searchQuery(client, g)
 
 	ctx.Render("index.html", page{g.title, ctx.HostString(), g.body, g.weburl})
 }
+
 // Andrej
 
 func display(w http.ResponseWriter, req *http.Request) {
