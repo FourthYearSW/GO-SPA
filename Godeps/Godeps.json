@@ -1,11 +1,12 @@
 {
 	"ImportPath": "GO-SPA",
 	"GoVersion": "go1.7",
-	"GodepVersion": "v74",
-	"Packages": [
-		"./..."
-	],
+	"GodepVersion": "v75",
 	"Deps": [
+		{
+			"ImportPath": "git.apache.org/thrift.git/lib/go/thrift",
+			"Rev": "84d6af4cf903571319e0ebddd7beb12bc93fb752"
+		},
 		{
 			"ImportPath": "github.com/gorilla/context",
 			"Comment": "v1.1-7-g08b5f42",
@@ -25,6 +26,51 @@
 			"ImportPath": "github.com/gorilla/sessions",
 			"Comment": "v1.1",
 			"Rev": "ca9ada44574153444b00d3fd9c8559e4cc95f896"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapiclient",
+			"Rev": "08de7cfb08a0f6a17e3a9495b19866c839993f91"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapiclient/queries",
+			"Rev": "08de7cfb08a0f6a17e3a9495b19866c839993f91"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapimodels/content",
+			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapimodels/contentatom",
+			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapimodels/contentatom/explainer",
+			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapimodels/contentatom/media",
+			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapimodels/contentatom/quiz",
+			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapimodels/shared",
+			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapimodels/story_package_article",
+			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
+		},
+		{
+			"ImportPath": "github.com/kataras/iris",
+			"Rev": "619a54a9f2378ee3e4b85d47394dcfd5168650d1"
+		},
+		{
+			"ImportPath": "github.com/valyala/fasthttp",
+			"Comment": "v20160617-77-g1913bde",
+			"Rev": "1913bdea45d5d9515c6b9433683bfc8950402389"
 		},
 		{
 			"ImportPath": "gopkg.in/mgo.v2",
@@ -51,16 +97,5 @@
 			"Comment": "r2016.08.01-5-g3f83fa5",
 			"Rev": "3f83fa5005286a7fe593b055f0d7771a7dce4655"
 		}
-		,
-		{
-			"ImportPath": "github.com/guardian/gocapiclient/queries"
-			
-		}
-		,
-		{
-			"ImportPath": "gopkg.in/mgo.v2/internal/scram"
-			
-		}
-		
 	]
 }
