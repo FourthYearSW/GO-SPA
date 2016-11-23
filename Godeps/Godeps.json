@@ -64,10 +64,6 @@
 			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
 		},
 		{
-			"ImportPath": "github.com/kataras/iris",
-			"Rev": "619a54a9f2378ee3e4b85d47394dcfd5168650d1"
-		},
-		{
 			"ImportPath": "github.com/valyala/fasthttp",
 			"Comment": "v20160617-77-g1913bde",
 			"Rev": "1913bdea45d5d9515c6b9433683bfc8950402389"
