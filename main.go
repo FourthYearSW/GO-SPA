@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/kataras/iris"
-	"github.com/valyala/fasthttp"
 	"fmt"
 	"log"
+
 	"github.com/guardian/gocapiclient"
 	"github.com/guardian/gocapiclient/queries"
+	"github.com/kataras/iris"
+	"github.com/valyala/fasthttp"
 )
 
 func main() {
@@ -18,19 +19,19 @@ func main() {
 	fsrv.ListenAndServe(":9999")
 }
 
-type page struct{
+type page struct {
 	Title string
-	Host string
-	JObj string
-	Text string
+	Host  string
+	JObj  string
+	Text  string
 }
 
-type GuardianAPI struct{
-	id string
-	title string
+type GuardianAPI struct {
+	id     string
+	title  string
 	weburl string
 	apiurl string
-	body string
+	body   string
 }
 
 func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
@@ -70,7 +71,7 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	}
 }
 
-func search(ctx *iris.Context){
+func search(ctx *iris.Context) {
 	client := gocapiclient.NewGuardianContentClient("https://content.guardianapis.com/", "b1b1f668-8a1f-40ec-af20-01687425695c")
 	g := &GuardianAPI{}
 	searchQuery(client, g)
