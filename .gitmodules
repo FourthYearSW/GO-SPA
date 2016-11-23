@@ -1,3 +1,6 @@
 [submodule "vendor/github.com/iris"]
 	path = vendor/github.com/iris
 	url = https://github.com/kataras/iris
+[submodule "vendor/github.com/kataras/iris"]
+	path = vendor/github.com/kataras/iris
+	url = https://github.com/kataras/iris
