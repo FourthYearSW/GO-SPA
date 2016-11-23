@@ -1,10 +1,7 @@
 {
-	"ImportPath": "FinalYearProject",
+	"ImportPath": "GO-SPA",
 	"GoVersion": "go1.7",
-	"GodepVersion": "v74",
-	"Packages": [
-		"./..."
-	],
+	"GodepVersion": "v75",
 	"Deps": [
 		{
 			"ImportPath": "github.com/gorilla/context",
