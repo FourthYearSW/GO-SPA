@@ -7,6 +7,7 @@ import (
 	"log"
 	"github.com/guardian/gocapiclient"
 	"github.com/guardian/gocapiclient/queries"
+	"gopkg.in/mgo.v2"
 )
 
 func main() {
@@ -76,4 +77,19 @@ func search(ctx *iris.Context){
 	searchQuery(client, g)
 
 	ctx.Render("index.html", page{g.title, ctx.HostString(), g.body, g.weburl})
+}
+
+// addopted from https://github.com/swhite24/go-rest-tutorial/blob/master/server.go
+// getSession creates a new mongo session and panics if connection error occurs
+func getSession() *mgo.Session {
+	// Connect to our local mongo
+	s, err := mgo.Dial("mongodb://localhost")
+
+	// Check if connection error, is mongo running?
+	if err != nil {
+		panic(err)
+	}
+
+	// Deliver session
+	return s
 }
