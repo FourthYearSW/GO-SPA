@@ -2,9 +2,6 @@
 	"ImportPath": "GO-SPA",
 	"GoVersion": "go1.7",
 	"GodepVersion": "v75",
-	"Packages": [
-		"./..."
-	],
 	"Deps": [
 		{
 			"ImportPath": "git.apache.org/thrift.git/lib/go/thrift",
@@ -74,22 +71,6 @@
 			"ImportPath": "github.com/valyala/fasthttp",
 			"Comment": "v20160617-77-g1913bde",
 			"Rev": "1913bdea45d5d9515c6b9433683bfc8950402389"
-		},
-		{
-			"ImportPath": "golang.org/x/crypto/acme",
-			"Rev": "ede567c8e044a5913dad1d1af3696d9da953104c"
-		},
-		{
-			"ImportPath": "golang.org/x/crypto/acme/autocert",
-			"Rev": "ede567c8e044a5913dad1d1af3696d9da953104c"
-		},
-		{
-			"ImportPath": "golang.org/x/net/context",
-			"Rev": "4971afdc2f162e82d185353533d3cf16188a9f4e"
-		},
-		{
-			"ImportPath": "golang.org/x/net/context/ctxhttp",
-			"Rev": "4971afdc2f162e82d185353533d3cf16188a9f4e"
 		},
 		{
 			"ImportPath": "gopkg.in/mgo.v2",
