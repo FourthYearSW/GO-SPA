@@ -18,6 +18,9 @@ func main() {
 	api := iris.New()
 	api.Get("/", search)
 
+	// Create User
+	api.Post("/user", uc.CreateUser)
+
 	api.Build()
 	fsrv := &fasthttp.Server{Handler: api.Router}
 	fsrv.ListenAndServe(":9999")

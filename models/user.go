@@ -1,3 +1,4 @@
+// adopted from https://github.com/swhite24/go-rest-tutorial/blob/master/models/user.go
 package models
 
 import "gopkg.in/mgo.v2/bson"
