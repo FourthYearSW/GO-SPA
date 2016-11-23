@@ -8,9 +8,13 @@ import (
 	"github.com/guardian/gocapiclient"
 	"github.com/guardian/gocapiclient/queries"
 	"gopkg.in/mgo.v2"
+	"GO-SPA/controllers"
 )
 
 func main() {
+	// Get a UserController instance
+	uc := controllers.NewUserController(getSession())
+
 	api := iris.New()
 	api.Get("/", search)
 
