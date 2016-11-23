@@ -35,7 +35,7 @@ func (uc UserController) CreateUser(w http.ResponseWriter, r *http.Request, p ht
 	u.Id = bson.NewObjectId()
 
 	// Write the user to mongo
-	uc.session.DB("go_rest_tutorial").C("users").Insert(u)
+	uc.session.DB("gospa").C("users").Insert(u)
 
 	// Marshal provided interface into JSON structure
 	uj, _ := json.Marshal(u)
