@@ -11,7 +11,7 @@ import (
 
 	"github.com/gorilla/mux"
    "github.com/guardian/gocapiclient"
-	"github.com/gorilla/sessions"
+ "github.com/guardian/gocapimodels"	"github.com/gorilla/sessions"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
