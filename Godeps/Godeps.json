@@ -4,6 +4,10 @@
 	"GodepVersion": "v75",
 	"Deps": [
 		{
+			"ImportPath": "git.apache.org/thrift.git/lib/go/thrift",
+			"Rev": "84d6af4cf903571319e0ebddd7beb12bc93fb752"
+		},
+		{
 			"ImportPath": "github.com/gorilla/context",
 			"Comment": "v1.1-7-g08b5f42",
 			"Rev": "08b5f424b9271eedf6f9f0ce86cb9396ed337a42"
@@ -22,6 +26,42 @@
 			"ImportPath": "github.com/gorilla/sessions",
 			"Comment": "v1.1",
 			"Rev": "ca9ada44574153444b00d3fd9c8559e4cc95f896"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapiclient",
+			"Rev": "08de7cfb08a0f6a17e3a9495b19866c839993f91"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapiclient/queries",
+			"Rev": "08de7cfb08a0f6a17e3a9495b19866c839993f91"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapimodels/content",
+			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapimodels/contentatom",
+			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapimodels/contentatom/explainer",
+			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapimodels/contentatom/media",
+			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapimodels/contentatom/quiz",
+			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapimodels/shared",
+			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
+		},
+		{
+			"ImportPath": "github.com/guardian/gocapimodels/story_package_article",
+			"Rev": "b03d1b73ea35f5c437985748aed142dbfbbc958c"
 		},
 		{
 			"ImportPath": "gopkg.in/mgo.v2",
