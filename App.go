@@ -10,8 +10,7 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
-   "github.com/guardian/gocapiclient"
- "github.com/guardian/gocapimodels"	"github.com/gorilla/sessions"
+	"github.com/gorilla/sessions"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -27,6 +26,8 @@ func init() {
 }
 
 func main() {
+
+	gocapiclient()
 
 	port := os.Getenv("PORT")
 
