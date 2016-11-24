@@ -1,14 +1,16 @@
 package main
 
 import (
-	"github.com/kataras/iris"
+	"encoding/json"
 	"fmt"
 	"log"
+
 	"github.com/guardian/gocapiclient"
 	"github.com/guardian/gocapiclient/queries"
+	"github.com/kataras/iris"
+	"github.com/valyala/fasthttp"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"github.com/valyala/fasthttp"
 )
 
 func main() {
@@ -17,32 +19,59 @@ func main() {
 	api := iris.New()
 	api.Get("/", search)
 
+	// When posted, routes to here: The commentHandler function is initialised at the bottom
+	api.Post("/comment", commentHandler)
+
 	// Create User
 	//api.Get("/user", uc.CreateUser)
 	api.Get("/user", newuser)
-
 
 	api.Build()
 	fsrv := &fasthttp.Server{Handler: api.Router}
 	fsrv.ListenAndServe(":9999")
 
 	//iris.Listen(":9999")
-}
 
-type page struct{
+} // End main
+
+// ==============================  STRUCTS  ==============================
+
+type page struct {
 	Title string
-	Host string
-	JObj string
-	Text string
+	Host  string
+	JObj  string
+	Text  string
 }
 
-type GuardianAPI struct{
-	id string
-	title string
+// GuardianAPI is a struct which holds details about the guardian article
+type GuardianAPI struct {
+	id     string
+	title  string
 	weburl string
 	apiurl string
-	body string
+	body   string
 }
+
+// User is a struct which holds details about users
+type User struct {
+	id   string
+	name string
+}
+
+// Article is a struct which holds details about the article
+type Article struct {
+	id   string
+	name string
+	url  string
+}
+
+// Comment is a struct which holds details about user comments
+type Comment struct {
+	id      string
+	comment string
+}
+
+// ==============================  FUNCTIONS   ==============================
 
 func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	searchQuery := queries.NewSearchQuery()
@@ -81,7 +110,7 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	}
 }
 
-func search(ctx *iris.Context){
+func search(ctx *iris.Context) {
 	client := gocapiclient.NewGuardianContentClient("https://content.guardianapis.com/", "b1b1f668-8a1f-40ec-af20-01687425695c")
 	g := &GuardianAPI{}
 	searchQuery(client, g)
@@ -104,22 +133,54 @@ func getSession() *mgo.Session {
 	return s
 }
 
-type User struct{
-	id string
-	name string
-}
+/*// Possibly need to create a user to in order to add comments to that user, for MongoDB entries etc
+type UserComment struct {
+	Comment string `json:"name"`
+}*/
 
-func newuser(ctx *iris.Context){
+func newuser(ctx *iris.Context) {
 	s := getSession()
 	c := s.DB("heroku_5r938bhv").C("testcollection")
 	err := c.Insert(&User{"001", "Andrej"},
-			&User{"002", "Christy"})
-	if err != nil {log.Fatal(err)}
+		&User{"002", "Christy"})
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	result := User{}
-	err = c.Find(bson.M{"id":"001"}).One(&result)
-	if err != nil {log.Fatal(err)}
+	err = c.Find(bson.M{"id": "001"}).One(&result)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	fmt.Println("name: ", result.name)
 	ctx.Next()
 }
+
+// Takes the POST parameter from the form, saves it in the a local variable and writes back out to screen
+// Pass in pointer to struct Comment
+func commentHandler(ctx *iris.Context) {
+
+	// Create new struct of type Comment
+	com := Comment{
+		id:      "1",
+		comment: "Hello"}
+
+	// Pass comment from form to struct member
+	// userComment is name of text area in html
+	// This returns a byte array
+	//com.comment = ctx.FormValue("userComment")
+
+	//jsonComment := json.Marshal(com.comment)
+
+	b, _ := json.Marshal(com)
+
+	// Convert bytes to string.
+	s := string(b)
+
+	ctx.Write(s)
+
+	// Print comment to screen
+	//ctx.Write("%s", com.comment)
+
+} // End commentHandler
