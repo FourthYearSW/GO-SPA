@@ -20,17 +20,22 @@
 							   margin: 50px 0px 50px 0px;">"Donald Trump is the new P.O.T.U.S........"
 			</blockquote>
 			<div class="form-group">
-				<span class="glyphicon glyphicon-user"></span> User [Will]
-				
-				<label for="comment">Comment on this Post:</label>
-				<textarea class="form-control" rows="5" id="comment"></textarea>
-				<button style="margin: 20px 0px 0px 0px;" type="button" class="btn btn-primary btn-lg">Post Comment</button>	
-				<button style="margin: 20px 0px 0px 20px;" class="btn btn-default">
-					<span class="glyphicon glyphicon-thumbs-up"></span>
-				</button>
-				<button style="margin: 20px 0px 0px 0px;" class="btn btn-default">
-					<span class="glyphicon glyphicon-thumbs-down"></span>
-				</button>
+				<form method="POST" action="/comment">
+					<span class="glyphicon glyphicon-user"></span> User [Will]
+					
+					<label for="comment">Comment on this Post:</label>
+					<textarea class="form-control" rows="5" id="comment" name="userComment"></textarea>
+
+					<button style="margin: 20px 0px 0px 0px;" type="submit" class="btn btn-primary btn-lg">Post Comment</button>	
+					
+					<button  style="margin: 20px 0px 0px 20px;" class="btn btn-default">
+						<span class="glyphicon glyphicon-thumbs-up"></span>
+					</button>
+
+					<button style="margin: 20px 0px 0px 0px;" class="btn btn-default">
+						<span class="glyphicon glyphicon-thumbs-down"></span>
+					</button>
+				</form>
 			</div>
 
 			<script type="text/javascript">
