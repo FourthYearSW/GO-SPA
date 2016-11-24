@@ -8,7 +8,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"fmt"
 	"encoding/json"
-	"github.com/julienschmidt/httprouter"
+	"github.com/kataras/iris"
 )
 
 type (
@@ -24,7 +24,7 @@ func NewUserController(s *mgo.Session) *UserController {
 }
 
 // CreateUser creates a new user resource
-func (uc UserController) CreateUser(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func (uc UserController) CreateUser(ctx *iris.Context, w http.ResponseWriter, r *http.Request) {
 	// Stub an user to be populated from the body
 	u := models.User{}
 

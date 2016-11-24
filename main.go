@@ -2,28 +2,30 @@ package main
 
 import (
 	"github.com/kataras/iris"
-	"github.com/valyala/fasthttp"
 	"fmt"
 	"log"
 	"github.com/guardian/gocapiclient"
 	"github.com/guardian/gocapiclient/queries"
 	"gopkg.in/mgo.v2"
-	"GO-SPA/controllers"
+	"gopkg.in/mgo.v2/bson"
+	"github.com/valyala/fasthttp"
 )
 
 func main() {
-	// Get a UserController instance
-	uc := controllers.NewUserController(getSession())
+	//uc := controllers.NewUserController(getSession())
 
 	api := iris.New()
 	api.Get("/", search)
 
 	// Create User
-	api.Post("/user", uc.CreateUser)
+	api.Put("/user", newuser)
+
 
 	api.Build()
 	fsrv := &fasthttp.Server{Handler: api.Router}
 	fsrv.ListenAndServe(":9999")
+
+	//iris.Listen(":9999")
 }
 
 type page struct{
@@ -90,7 +92,7 @@ func search(ctx *iris.Context){
 // getSession creates a new mongo session and panics if connection error occurs
 func getSession() *mgo.Session {
 	// Connect to our local mongo
-	s, err := mgo.Dial("mongodb://localhost")
+	s, err := mgo.Dial("127.0.0.1")
 
 	// Check if connection error, is mongo running?
 	if err != nil {
@@ -99,4 +101,24 @@ func getSession() *mgo.Session {
 
 	// Deliver session
 	return s
+}
+
+type User struct{
+	id string
+	name string
+}
+
+func newuser(ctx *iris.Context){
+	s := getSession()
+	c := s.DB("gospa").C("users")
+	err := c.Insert(&User{"001", "Andrej"},
+			&User{"002", "Christy"})
+	if err != nil {log.Fatal(err)}
+
+	result := User{}
+	err = c.Find(bson.M{"id":"001"}).One(&result)
+	if err != nil {log.Fatal(err)}
+
+	fmt.Println("name: ", result.name)
+	ctx.Next()
 }
