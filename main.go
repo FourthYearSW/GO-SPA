@@ -1,14 +1,14 @@
 package main
 
 import (
-	"github.com/kataras/iris"
 	"fmt"
 	"log"
+
 	"github.com/guardian/gocapiclient"
 	"github.com/guardian/gocapiclient/queries"
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
+	"github.com/kataras/iris"
 	"github.com/valyala/fasthttp"
+	"gopkg.in/mgo.v2/bson"
 )
 
 func main() {
@@ -17,10 +17,12 @@ func main() {
 	api := iris.New()
 	api.Get("/", search)
 
+	// When posted, routes to here: The commentHandler function is initialised at the bottom
+	api.Post("/comment", commentHandler)
+
 	// Create User
 	//api.Get("/user", uc.CreateUser)
 	api.Get("/user", newuser)
-
 
 	api.Build()
 	fsrv := &fasthttp.Server{Handler: api.Router}
@@ -29,19 +31,19 @@ func main() {
 	//iris.Listen(":9999")
 }
 
-type page struct{
+type page struct {
 	Title string
-	Host string
-	JObj string
-	Text string
+	Host  string
+	JObj  string
+	Text  string
 }
 
-type GuardianAPI struct{
-	id string
-	title string
+type GuardianAPI struct {
+	id     string
+	title  string
 	weburl string
 	apiurl string
-	body string
+	body   string
 }
 
 func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
@@ -81,7 +83,7 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	}
 }
 
-func search(ctx *iris.Context){
+func search(ctx *iris.Context) {
 	client := gocapiclient.NewGuardianContentClient("https://content.guardianapis.com/", "b1b1f668-8a1f-40ec-af20-01687425695c")
 	g := &GuardianAPI{}
 	searchQuery(client, g)
@@ -104,22 +106,37 @@ func getSession() *mgo.Session {
 	return s
 }
 
-type User struct{
-	id string
+type User struct {
+	id   string
 	name string
 }
 
-func newuser(ctx *iris.Context){
+// Possibly need to create a user to in order to add comments to that user, for MongoDB entries etc
+type UserComment struct {
+	Comment string `json:"name"`
+}
+
+func newuser(ctx *iris.Context) {
 	s := getSession()
 	c := s.DB("heroku_5r938bhv").C("testcollection")
 	err := c.Insert(&User{"001", "Andrej"},
-			&User{"002", "Christy"})
-	if err != nil {log.Fatal(err)}
+		&User{"002", "Christy"})
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	result := User{}
-	err = c.Find(bson.M{"id":"001"}).One(&result)
-	if err != nil {log.Fatal(err)}
+	err = c.Find(bson.M{"id": "001"}).One(&result)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	fmt.Println("name: ", result.name)
 	ctx.Next()
+}
+
+// Takes the POST parameter from the form, saves it in the a local variable and writes back out to screen
+func commentHandler(ctx *iris.Context) {
+	comment := ctx.FormValue("userComment")
+	ctx.Write("%s", comment)
 }
