@@ -60,11 +60,13 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianContent)
 	}
 }
 
-type GuardianAPI struct{
-	*iris.Context
+type GuardianAPI struct{}
+
+func NewGuardianAPI() *GuardianAPI{
+	return &GuardianAPI{}
 }
 
-func (c GuardianAPI)search(){
+func (ga GuardianAPI)Search(c *iris.Context){
 	client := gocapiclient.NewGuardianContentClient("https://content.guardianapis.com/", "b1b1f668-8a1f-40ec-af20-01687425695c")
 	g := &GuardianContent{}
 	searchQuery(client, g)
