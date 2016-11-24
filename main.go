@@ -34,6 +34,13 @@ type GuardianAPI struct {
 	body   string
 }
 
+type User struct {
+	name     string
+	username string
+	email    string
+	password string
+}
+
 func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	searchQuery := queries.NewSearchQuery()
 
