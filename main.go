@@ -8,7 +8,11 @@ import (
 	"github.com/guardian/gocapiclient/queries"
 	"github.com/kataras/iris"
 	"github.com/valyala/fasthttp"
+<<<<<<< HEAD
 	"gopkg.in/mgo.v2"
+=======
+	mgo "gopkg.in/mgo.v2"
+>>>>>>> 19f82fb113d6388d82adc3a75d99221477b2a011
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -27,7 +31,7 @@ func main() {
 
 	api.Build()
 	fsrv := &fasthttp.Server{Handler: api.Router}
-	fsrv.ListenAndServe(":9999")
+	fsrv.ListenAndServe(":8080")
 
 	//iris.Listen(":9999")
 }
