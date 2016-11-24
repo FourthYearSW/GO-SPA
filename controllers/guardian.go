@@ -8,6 +8,7 @@ import (
 	"github.com/kataras/iris"
 )
 
+// Structure used to maintain the contend retrieved from www.guardian.com
 type GuardianContent struct{
 	id string
 	title string
@@ -16,6 +17,7 @@ type GuardianContent struct{
 	body string
 }
 
+// Page structure used for rendering (binding) content on the page
 type page struct{
 	Title string
 	Host string
