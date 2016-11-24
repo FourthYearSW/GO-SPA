@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 
@@ -33,7 +34,7 @@ func main() {
 
 } // End main
 
-// ==========  Structs  ==========
+// ==============================  STRUCTS  ==============================
 
 type page struct {
 	Title string
@@ -42,6 +43,7 @@ type page struct {
 	Text  string
 }
 
+// GuardianAPI is a struct which holds details about the guardian article
 type GuardianAPI struct {
 	id     string
 	title  string
@@ -50,6 +52,7 @@ type GuardianAPI struct {
 	body   string
 }
 
+// User is a struct which holds details about users
 type User struct {
 	id   string
 	name string
@@ -65,10 +68,10 @@ type Article struct {
 // Comment is a struct which holds details about user comments
 type Comment struct {
 	id      string
-	comment []byte
+	comment string
 }
 
-// ==========  Functions  ==========
+// ==============================  FUNCTIONS   ==============================
 
 func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	searchQuery := queries.NewSearchQuery()
@@ -159,14 +162,25 @@ func newuser(ctx *iris.Context) {
 func commentHandler(ctx *iris.Context) {
 
 	// Create new struct of type Comment
-	com := Comment{}
+	com := Comment{
+		id:      "1",
+		comment: "Hello"}
 
 	// Pass comment from form to struct member
 	// userComment is name of text area in html
 	// This returns a byte array
-	com.comment = ctx.FormValue("userComment")
+	//com.comment = ctx.FormValue("userComment")
+
+	//jsonComment := json.Marshal(com.comment)
+
+	b, _ := json.Marshal(com)
+
+	// Convert bytes to string.
+	s := string(b)
+
+	ctx.Write(s)
 
 	// Print comment to screen
-	ctx.Write("%s", com.comment)
+	//ctx.Write("%s", com.comment)
 
 } // End commentHandler
