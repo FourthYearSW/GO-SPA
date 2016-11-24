@@ -8,11 +8,7 @@ import (
 	"github.com/guardian/gocapiclient/queries"
 	"github.com/kataras/iris"
 	"github.com/valyala/fasthttp"
-<<<<<<< HEAD
 	"gopkg.in/mgo.v2"
-=======
-	mgo "gopkg.in/mgo.v2"
->>>>>>> 19f82fb113d6388d82adc3a75d99221477b2a011
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -31,10 +27,13 @@ func main() {
 
 	api.Build()
 	fsrv := &fasthttp.Server{Handler: api.Router}
-	fsrv.ListenAndServe(":8080")
+	fsrv.ListenAndServe(":9999")
 
 	//iris.Listen(":9999")
-}
+
+} // End main
+
+// ==========  Structs  ==========
 
 type page struct {
 	Title string
@@ -50,6 +49,26 @@ type GuardianAPI struct {
 	apiurl string
 	body   string
 }
+
+type User struct {
+	id   string
+	name string
+}
+
+// Article is a struct which holds details about the article
+type Article struct {
+	id   string
+	name string
+	url  string
+}
+
+// Comment is a struct which holds details about user comments
+type Comment struct {
+	id      string
+	comment []byte
+}
+
+// ==========  Functions  ==========
 
 func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	searchQuery := queries.NewSearchQuery()
@@ -111,15 +130,10 @@ func getSession() *mgo.Session {
 	return s
 }
 
-type User struct {
-	id   string
-	name string
-}
-
-// Possibly need to create a user to in order to add comments to that user, for MongoDB entries etc
+/*// Possibly need to create a user to in order to add comments to that user, for MongoDB entries etc
 type UserComment struct {
 	Comment string `json:"name"`
-}
+}*/
 
 func newuser(ctx *iris.Context) {
 	s := getSession()
@@ -141,7 +155,18 @@ func newuser(ctx *iris.Context) {
 }
 
 // Takes the POST parameter from the form, saves it in the a local variable and writes back out to screen
+// Pass in pointer to struct Comment
 func commentHandler(ctx *iris.Context) {
-	comment := ctx.FormValue("userComment")
-	ctx.Write("%s", comment)
-}
+
+	// Create new struct of type Comment
+	com := Comment{}
+
+	// Pass comment from form to struct member
+	// userComment is name of text area in html
+	// This returns a byte array
+	com.comment = ctx.FormValue("userComment")
+
+	// Print comment to screen
+	ctx.Write("%s", com.comment)
+
+} // End commentHandler
