@@ -18,7 +18,8 @@ func main() {
 	api.Get("/", search)
 
 	// Create User
-	api.Put("/user", newuser)
+	//api.Get("/user", uc.CreateUser)
+	api.Get("/user", newuser)
 
 
 	api.Build()
@@ -92,7 +93,7 @@ func search(ctx *iris.Context){
 // getSession creates a new mongo session and panics if connection error occurs
 func getSession() *mgo.Session {
 	// Connect to our local mongo
-	s, err := mgo.Dial("127.0.0.1")
+	s, err := mgo.Dial("test:test@ds029585.mlab.com:29585/heroku_5r938bhv")
 
 	// Check if connection error, is mongo running?
 	if err != nil {
@@ -110,7 +111,7 @@ type User struct{
 
 func newuser(ctx *iris.Context){
 	s := getSession()
-	c := s.DB("gospa").C("users")
+	c := s.DB("heroku_5r938bhv").C("testcollection")
 	err := c.Insert(&User{"001", "Andrej"},
 			&User{"002", "Christy"})
 	if err != nil {log.Fatal(err)}

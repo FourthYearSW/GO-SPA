@@ -3,11 +3,7 @@ package controllers
 
 import (
 	"gopkg.in/mgo.v2"
-	"net/http"
-	"GO-SPA/models"
-	"gopkg.in/mgo.v2/bson"
 	"fmt"
-	"encoding/json"
 	"github.com/kataras/iris"
 )
 
@@ -18,13 +14,14 @@ type (
 	}
 )
 
+/*
 // NewUserController provides a reference to a UserController with provided mongo session
 func NewUserController(s *mgo.Session) *UserController {
 	return &UserController{s}
 }
 
 // CreateUser creates a new user resource
-func (uc UserController) CreateUser(ctx *iris.Context, w http.ResponseWriter, r *http.Request) {
+func (uc UserController) CreateUser(w http.ResponseWriter, r *http.Request, p httprouter.Param) {
 	// Stub an user to be populated from the body
 	u := models.User{}
 
@@ -44,4 +41,12 @@ func (uc UserController) CreateUser(ctx *iris.Context, w http.ResponseWriter, r 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(201)
 	fmt.Fprintf(w, "%s", uj)
+}
+*/
+
+func (us UserController) CreateUser(ctx *iris.Context){
+	fmt.Println("Connection to ther mongo db and createding records")
+	ctx.Write("Connection to ther mongo db and createding records")
+
+	//u := models.User{}
 }
