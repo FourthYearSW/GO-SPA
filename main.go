@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-
+	//"encoding/json"
 
 
 	"github.com/guardian/gocapiclient"
@@ -16,6 +16,7 @@ import (
 )
 var id int
 var oid int
+var newComment string
 func main() {
 	//uc := controllers.NewUserController(getSession())
 
@@ -24,8 +25,10 @@ func main() {
 	//api.Get(Register)
 	// Create User
 	//api.Get("/user", uc.CreateUser)
-	api.Get("/user", newuser)
-	api.Get("/comment", getComment)
+
+	api.Post("/comment", commentHandler)
+	api.Get("/newcomment", newcomment)
+	api.Get("/getcomment", getComment)
 
 	api.Build()
 	fsrv := &fasthttp.Server{Handler: api.Router}
@@ -113,10 +116,14 @@ func getSession() *mgo.Session {
 
 
 // https://godoc.org/gopkg.in/mgo.v2#Bulk.Insert
-func newuser(ctx *iris.Context) {
+func newcomment(ctx *iris.Context) {
+
+	// establish session
 	s := getSession()
+	// declare database and collection
 	c := s.DB("heroku_5r938bhv").C("com")
-	err := c.Insert(&models.Comment{id,"1tim"})
+	// insert into database using model (struct)
+	err := c.Insert(&models.Comment{id,newComment})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -140,4 +147,15 @@ func getComment(ctx *iris.Context) {
 	println(comments.Comment,comments.ID)
 	oid = id
 	ctx.Next()
+}
+func commentHandler(ctx *iris.Context) {
+	commentVal := ctx.FormValue("userComment")
+
+
+
+	newComment := string(commentVal)
+
+	newComment = newComment
+
+	ctx.Write(string(newComment))
 }

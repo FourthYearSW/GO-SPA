@@ -143,38 +143,39 @@
 
 
 
-<div class="container" style="margin-top:50px">
-	<div class="jumbotron">
-		<h1 style=" font-family: Century Gothic;">{{.Title}}</h1>
-	</div>
 
-	<div id="bodytext"></div>
+	<div class="container" style="margin-top:50px">
+		<div class="jumbotron">
+			<h1 style=" font-family: Century Gothic;">{{.Title}}</h1>
+		</div>
 
-	<p><a href={{.Text}}>{{.Text}}</a></p>
-	<blockquote style="font-style: italic;
-							   font-weight: bold;
-							   font-size: 25px;
-							   color: grey;
-							   margin: 50px 0px 50px 0px;">"Donald Trump is the new P.O.T.U.S........"
-	</blockquote>
-	<div class="form-group">
-		<span class="glyphicon glyphicon-user"></span> User [Will]
+		<div id="bodytext"></div>
 
-		<label for="comment">Comment on this Post:</label>
-		<textarea class="form-control" rows="5" id="comment"></textarea>
-		<button style="margin: 20px 0px 0px 0px;" type="button" class="btn btn-primary btn-lg">Post Comment</button>
-		<button style="margin: 20px 0px 0px 20px;" class="btn btn-default">
-			<span class="glyphicon glyphicon-thumbs-up"></span>
-		</button>
-		<button style="margin: 20px 0px 0px 0px;" class="btn btn-default">
-			<span class="glyphicon glyphicon-thumbs-down"></span>
-		</button>
-	</div>
+		<p><a href={{.Text}}>{{.Text}}</a></p>
 
-	<script type="text/javascript">
+		<div class="form-group">
+			<form method="POST" action="/comment">
+				<span class="glyphicon glyphicon-user"></span> User [Will]
+
+				<label for="comment">Comment on this Post:</label>
+				<textarea class="form-control" rows="5" id="comment" name="userComment"></textarea>
+
+				<button style="margin: 20px 0px 0px 0px;" type="submit" class="btn btn-primary btn-lg">Post Comment</button>
+
+				<button  style="margin: 20px 0px 0px 20px;" class="btn btn-default">
+					<span class="glyphicon glyphicon-thumbs-up"></span>
+				</button>
+
+				<button style="margin: 20px 0px 0px 0px;" class="btn btn-default">
+					<span class="glyphicon glyphicon-thumbs-down"></span>
+				</button>
+			</form>
+		</div>
+
+		<script type="text/javascript">
 				document.getElementById("bodytext").innerHTML = {{.JObj}};
 			</script>
-</div>
+	</div>
 
 
 
