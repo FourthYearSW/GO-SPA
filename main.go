@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 
@@ -14,9 +15,11 @@ func main() {
 	api := iris.New()
 	api.Get("/", search)
 
+	api.Post("/comment", commentHandler)
+
 	api.Build()
 	fsrv := &fasthttp.Server{Handler: api.Router}
-	fsrv.ListenAndServe(":9999")
+	fsrv.ListenAndServe(":8080")
 }
 
 type page struct {
@@ -25,6 +28,14 @@ type page struct {
 	JObj  string
 	Text  string
 }
+
+// type (
+// 	// Comment is a struct which holds details about the articles and can be marshalled into json and bson
+// 	Comment struct {
+// 		ID      string `json:"id" bson:"_id"`
+// 		Comment string `json:"comment" bson:"comment"`
+// 	}
+// )
 
 type GuardianAPI struct {
 	id     string
@@ -84,4 +95,22 @@ func search(ctx *iris.Context) {
 	searchQuery(client, g)
 
 	ctx.Render("index.html", page{g.title, ctx.HostString(), g.body, g.weburl})
+}
+
+func commentHandler(ctx *iris.Context) {
+	commentVal := ctx.FormValue("userComment")
+
+	com := Comment{}
+
+	newComment := string(commentVal)
+	com.Comment = newComment
+	commentVar := &com
+
+	// willJSON, err := json.Marshal(userVar)
+	commentJSON, err := json.Marshal(commentVar)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	ctx.Write(string(commentJSON))
 }
