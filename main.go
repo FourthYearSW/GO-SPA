@@ -16,7 +16,7 @@ import (
 )
 var id int
 var oid int
-var url string
+var aid string
 var newComment string
 func main() {
 	//uc := controllers.NewUserController(getSession())
@@ -90,11 +90,11 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 		fmt.Println(v.ID)
 		fmt.Println(v.WebTitle)
 	}
-	url = g.weburl
+	aid = g.title
 
 	comments := []models.Comment{}
 	s := getSession()
-	c := s.DB("heroku_5r938bhv").C(url)
+	c := s.DB("heroku_5r938bhv").C(aid)
 	println("com collection found")
 	erro := c.Find(bson.M{}).All(&comments)
 	if erro != nil {
@@ -175,7 +175,7 @@ func commentHandler(ctx *iris.Context) {
 	// establish session
 	s := getSession()
 	// declare database and collection
-	c := s.DB("heroku_5r938bhv").C(url)
+	c := s.DB("heroku_5r938bhv").C(aid)
 	// insert into database using model (struct)
 	err := c.Insert(&models.Comment{id,newComment})
 	if err != nil {
