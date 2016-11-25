@@ -12,6 +12,10 @@ import (
 	"github.com/valyala/fasthttp"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
+	//"GO-SPA/models"
+	//"github.com/gorilla/sessions"
+	//"github.com/gorilla/mux"
+
 	"GO-SPA/models"
 )
 
@@ -20,17 +24,19 @@ func main() {
 
 	api := iris.New()
 	api.Get("/", search)
-
+	//api.Get(Register)
 	// Create User
 	//api.Get("/user", uc.CreateUser)
 	api.Get("/user", newuser)
-	api.Get("/theuser", reguser)
+	//api.Get("/comment", comment)
 
 	api.Build()
 	fsrv := &fasthttp.Server{Handler: api.Router}
 	fsrv.ListenAndServe(":9999")
 
-	//iris.Listen(":9999")
+
+
+
 }
 
 type page struct {
@@ -122,24 +128,27 @@ type (
 		password string        `json:"password" bson:"password"`
 	}
 )
-
+/*
 func newuser(ctx *iris.Context) {
 	s := getSession()
-	c := s.DB("heroku_5r938bhv").C("testcollection")
-	err := c.Insert(&models.User{"000000000032","1tim", "tim@tim.com", 1})
+	c := s.DB("heroku_5r938bhv").C("com")
+	err := c.Insert(&models.Comment{"2","1tim"})
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	ctx.Next()
-}
-func reguser(ctx *iris.Context) {
+}*/
+func newuser(ctx *iris.Context) {
+	//var id string
+	 comments := models.Comment{}
 	s := getSession()
-	c := s.DB("heroku_5r938bhv").C("testcollection2")
-	err := c.Insert(&models.Theuser{"000000000033","1tim", "tim@tim.com", "tim"})
+	c := s.DB("heroku_5r938bhv").C("com")
+	println("com collection found")
+	err := c.Find(bson.M{"_id": "2"}).One(&comments)
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	println(comments.Comment)
 	ctx.Next()
 }
