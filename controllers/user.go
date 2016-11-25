@@ -3,12 +3,9 @@ package controllers
 
 import (
 	"gopkg.in/mgo.v2"
-	"net/http"
 	"GO-SPA/models"
-	"gopkg.in/mgo.v2/bson"
-	"fmt"
-	"encoding/json"
-	"github.com/julienschmidt/httprouter"
+	"github.com/kataras/iris"
+	"log"
 )
 
 type (
@@ -23,25 +20,20 @@ func NewUserController(s *mgo.Session) *UserController {
 	return &UserController{s}
 }
 
-// CreateUser creates a new user resource
-func (uc UserController) CreateUser(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	// Stub an user to be populated from the body
-	u := models.User{}
+// adobted from https://labix.org/mgo and modified
+func (us UserController) Newuser(ctx *iris.Context){
 
-	// Populate the user data
-	json.NewDecoder(r.Body).Decode(&u)
+	u := models.User{"Will Hogan", "Man", 12} // thios is an emulator of data
 
-	// Add an Id
-	u.Id = bson.NewObjectId()
+	// path to the database.collection if there is no collection
+	// with particular name then the collection created
+	// same with database -> it is created if database
+	// with the same name does not exist
+	c := us.session.DB("gospa").C("users")
 
-	// Write the user to mongo
-	uc.session.DB("gospa").C("users").Insert(u)
+	// mgo package => inserts the data into the mongodb
+	err := c.Insert(u)
+	if err != nil {log.Fatal(err)}
 
-	// Marshal provided interface into JSON structure
-	uj, _ := json.Marshal(u)
-
-	// Write content-type, statuscode, payload
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(201)
-	fmt.Fprintf(w, "%s", uj)
+	ctx.Next()
 }
