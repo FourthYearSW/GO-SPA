@@ -16,6 +16,7 @@ import (
 )
 var id int
 var oid int
+var url string
 var newComment string
 func main() {
 	//uc := controllers.NewUserController(getSession())
@@ -26,8 +27,8 @@ func main() {
 	// Create User
 	//api.Get("/user", uc.CreateUser)
 
-	api.Post("/comment", commentHandler)
-	api.Get("/newcomment", newcomment)
+	api.Post("/root", commentHandler)
+	//api.Get("/comment", newcomment)
 	api.Get("/getcomment", getComment)
 
 	api.Build()
@@ -89,6 +90,7 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 		fmt.Println(v.ID)
 		fmt.Println(v.WebTitle)
 	}
+	url = g.weburl
 }
 
 func search(ctx *iris.Context) {
@@ -116,7 +118,7 @@ func getSession() *mgo.Session {
 
 
 // https://godoc.org/gopkg.in/mgo.v2#Bulk.Insert
-func newcomment(ctx *iris.Context) {
+/*func newcomment(ctx *iris.Context) {
 
 	// establish session
 	s := getSession()
@@ -129,7 +131,7 @@ func newcomment(ctx *iris.Context) {
 	}
 	id = id+1
 	ctx.Next()
-}
+}*/
 
 //http://goinbigdata.com/how-to-build-microservice-with-mongodb-in-golang/
 func getComment(ctx *iris.Context) {
@@ -157,5 +159,15 @@ func commentHandler(ctx *iris.Context) {
 
 	newComment = newComment
 
+	// establish session
+	s := getSession()
+	// declare database and collection
+	c := s.DB("heroku_5r938bhv").C(url)
+	// insert into database using model (struct)
+	err := c.Insert(&models.Comment{id,newComment})
+	if err != nil {
+		log.Fatal(err)
+	}
+	id = id+1
 	ctx.Write(string(newComment))
 }
