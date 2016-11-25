@@ -12,10 +12,6 @@ import (
 	"github.com/valyala/fasthttp"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	//"GO-SPA/models"
-	//"github.com/gorilla/sessions"
-	//"github.com/gorilla/mux"
-
 	"GO-SPA/models"
 )
 var id int
@@ -115,21 +111,8 @@ func getSession() *mgo.Session {
 	return s
 }
 
-type User struct {
-	id   string
-	name string
-}
 
-
-type (
-	theuser struct {
-		Id       bson.ObjectId `json:"id" bson:"_id"`
-		name     string        `json:"name" bson:"name"`
-		email    string        `json:"email" bson:"email"`
-		password string        `json:"password" bson:"password"`
-	}
-)
-
+// https://godoc.org/gopkg.in/mgo.v2#Bulk.Insert
 func newuser(ctx *iris.Context) {
 	s := getSession()
 	c := s.DB("heroku_5r938bhv").C("com")
@@ -140,6 +123,8 @@ func newuser(ctx *iris.Context) {
 	id = id+1
 	ctx.Next()
 }
+
+//http://goinbigdata.com/how-to-build-microservice-with-mongodb-in-golang/
 func getComment(ctx *iris.Context) {
 
 
