@@ -91,6 +91,19 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 		fmt.Println(v.WebTitle)
 	}
 	url = g.weburl
+
+	comments := []models.Comment{}
+	s := getSession()
+	c := s.DB("heroku_5r938bhv").C(url)
+	println("com collection found")
+	erro := c.Find(bson.M{}).All(&comments)
+	if erro != nil {
+		log.Fatal(err)
+	}
+
+	println(len(comments))
+	id = len(comments)
+
 }
 
 func search(ctx *iris.Context) {
