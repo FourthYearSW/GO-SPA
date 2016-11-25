@@ -18,7 +18,8 @@ import (
 
 	"GO-SPA/models"
 )
-
+var id int
+var oid int
 func main() {
 	//uc := controllers.NewUserController(getSession())
 
@@ -28,7 +29,7 @@ func main() {
 	// Create User
 	//api.Get("/user", uc.CreateUser)
 	api.Get("/user", newuser)
-	//api.Get("/comment", comment)
+	api.Get("/comment", getComment)
 
 	api.Build()
 	fsrv := &fasthttp.Server{Handler: api.Router}
@@ -128,27 +129,30 @@ type (
 		password string        `json:"password" bson:"password"`
 	}
 )
-/*
+
 func newuser(ctx *iris.Context) {
 	s := getSession()
 	c := s.DB("heroku_5r938bhv").C("com")
-	err := c.Insert(&models.Comment{"2","1tim"})
+	err := c.Insert(&models.Comment{id,"1tim"})
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	id = id+1
 	ctx.Next()
-}*/
-func newuser(ctx *iris.Context) {
-	//var id string
+}
+func getComment(ctx *iris.Context) {
+
+
 	 comments := models.Comment{}
 	s := getSession()
 	c := s.DB("heroku_5r938bhv").C("com")
 	println("com collection found")
-	err := c.Find(bson.M{"_id": "2"}).One(&comments)
+	err := c.Find(bson.M{"_id": oid}).One(&comments)
 	if err != nil {
 		log.Fatal(err)
 	}
-	println(comments.Comment)
+
+	println(comments.Comment,comments.ID)
+	oid = id
 	ctx.Next()
 }
