@@ -21,6 +21,13 @@ var newComment string
 func main() {
 	//uc := controllers.NewUserController(getSession())
 
+
+	apistuff()
+
+
+
+}
+func apistuff() {
 	api := iris.New()
 	api.Get("/", search)
 	//api.Get(Register)
@@ -34,10 +41,7 @@ func main() {
 	api.Build()
 	fsrv := &fasthttp.Server{Handler: api.Router}
 	fsrv.ListenAndServe(":9999")
-
-
-
-
+	apistuff()
 }
 
 type page struct {
@@ -183,4 +187,5 @@ func commentHandler(ctx *iris.Context) {
 	}
 	id = id+1
 	ctx.Write(string(newComment))
+	ctx.ResetBody()
 }
