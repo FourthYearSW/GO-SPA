@@ -3,20 +3,45 @@ package main
 import (
 	"fmt"
 	"log"
+	//"encoding/json"
+
 
 	"github.com/guardian/gocapiclient"
 	"github.com/guardian/gocapiclient/queries"
 	"github.com/kataras/iris"
 	"github.com/valyala/fasthttp"
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
+	"GO-SPA/models"
 )
-
+var id int
+var oid int
+var aid string
+var newComment string
 func main() {
+	//uc := controllers.NewUserController(getSession())
+
+
+	apistuff()
+
+
+
+}
+func apistuff() {
 	api := iris.New()
 	api.Get("/", search)
+	//api.Get(Register)
+	// Create User
+	//api.Get("/user", uc.CreateUser)
+
+	api.Post("/root", commentHandler)
+	//api.Get("/comment", newcomment)
+	api.Get("/getcomment", getComment)
 
 	api.Build()
 	fsrv := &fasthttp.Server{Handler: api.Router}
 	fsrv.ListenAndServe(":9999")
+	apistuff()
 }
 
 type page struct {
@@ -32,13 +57,6 @@ type GuardianAPI struct {
 	weburl string
 	apiurl string
 	body   string
-}
-
-type User struct {
-	name     string
-	username string
-	email    string
-	password string
 }
 
 func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
@@ -76,6 +94,20 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 		fmt.Println(v.ID)
 		fmt.Println(v.WebTitle)
 	}
+	aid = g.title
+
+	comments := []models.Comment{}
+	s := getSession()
+	c := s.DB("heroku_5r938bhv").C(aid)
+	println("com collection found")
+	erro := c.Find(bson.M{}).All(&comments)
+	if erro != nil {
+		log.Fatal(err)
+	}
+
+	println(len(comments))
+	id = len(comments)
+
 }
 
 func search(ctx *iris.Context) {
@@ -84,4 +116,76 @@ func search(ctx *iris.Context) {
 	searchQuery(client, g)
 
 	ctx.Render("index.html", page{g.title, ctx.HostString(), g.body, g.weburl})
+}
+
+// addopted from https://github.com/swhite24/go-rest-tutorial/blob/master/server.go
+// getSession creates a new mongo session and panics if connection error occurs
+func getSession() *mgo.Session {
+	// Connect to our local mongo
+	s, err := mgo.Dial("test:test@ds029585.mlab.com:29585/heroku_5r938bhv")
+
+	// Check if connection error, is mongo running?
+	if err != nil {
+		panic(err)
+	}
+
+	// Deliver session
+	return s
+}
+
+
+// https://godoc.org/gopkg.in/mgo.v2#Bulk.Insert
+/*func newcomment(ctx *iris.Context) {
+
+	// establish session
+	s := getSession()
+	// declare database and collection
+	c := s.DB("heroku_5r938bhv").C("com")
+	// insert into database using model (struct)
+	err := c.Insert(&models.Comment{id,newComment})
+	if err != nil {
+		log.Fatal(err)
+	}
+	id = id+1
+	ctx.Next()
+}*/
+
+//http://goinbigdata.com/how-to-build-microservice-with-mongodb-in-golang/
+func getComment(ctx *iris.Context) {
+
+
+	 comments := models.Comment{}
+	s := getSession()
+	c := s.DB("heroku_5r938bhv").C("com")
+	println("com collection found")
+	err := c.Find(bson.M{"_id": oid}).One(&comments)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	println(comments.Comment,comments.ID)
+	oid = id
+	ctx.Next()
+}
+func commentHandler(ctx *iris.Context) {
+	commentVal := ctx.FormValue("userComment")
+
+
+
+	newComment := string(commentVal)
+
+	newComment = newComment
+
+	// establish session
+	s := getSession()
+	// declare database and collection
+	c := s.DB("heroku_5r938bhv").C(aid)
+	// insert into database using model (struct)
+	err := c.Insert(&models.Comment{id,newComment})
+	if err != nil {
+		log.Fatal(err)
+	}
+	id = id+1
+	ctx.Write(string(newComment))
+	ctx.ResetBody()
 }
