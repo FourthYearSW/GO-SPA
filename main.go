@@ -13,6 +13,8 @@ import (
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"GO-SPA/models"
+	"time"
+	//"golang.org/x/tools/benchmark/parse"
 )
 var id int
 var oid int
@@ -212,17 +214,20 @@ func commentHandler(ctx *iris.Context) {
 	newComment := string(commentVal)
 
 	newComment = newComment
-
+	//StampNano  = "Jan _2 15:04:05.000000000"
+	 nano := time.Now()
+	 //id := fmt.Sprintf("%s", nano)
 	// establish session
 	s := getSession()
 	// declare database and collection
 	c := s.DB("heroku_5r938bhv").C(aid)
 	// insert into database using model (struct)
-	err := c.Insert(&models.Comment{id,newComment})
+	err := c.Insert(&models.Comment{nano.Format("20060102150405"),newComment})
 	if err != nil {
 		log.Fatal(err)
 	}
-	id = id+1
+	println("nano time inserted" )
+//	id = id+1
 	ctx.Render("index.html", page{aid, ctx.HostString(), body, url})
 	//ctx.Write(string(newComment))
 	//ctx.ResetBody()
