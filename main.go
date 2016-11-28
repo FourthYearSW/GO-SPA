@@ -5,31 +5,29 @@ import (
 	"log"
 	//"encoding/json"
 
-
 	"github.com/guardian/gocapiclient"
 	"github.com/guardian/gocapiclient/queries"
 	"github.com/kataras/iris"
 	"github.com/valyala/fasthttp"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"GO-SPA/models"
 )
+
 var id int
 var oid int
 var aid string
 var newComment string
+
 func main() {
 	//uc := controllers.NewUserController(getSession())
 
-
 	apistuff()
-
-
 
 }
 func apistuff() {
 	api := iris.New()
 	api.Get("/", search)
+
 	//api.Get(Register)
 	// Create User
 	//api.Get("/user", uc.CreateUser)
@@ -40,7 +38,7 @@ func apistuff() {
 
 	api.Build()
 	fsrv := &fasthttp.Server{Handler: api.Router}
-	fsrv.ListenAndServe(":9999")
+	fsrv.ListenAndServe(":8080")
 	apistuff()
 }
 
@@ -58,6 +56,45 @@ type GuardianAPI struct {
 	apiurl string
 	body   string
 }
+
+// Adapted from https://github.com/swhite24/go-rest-tutorial/blob/master/models/user.go
+type (
+	// Comment is a struct which holds details about the articles and can be marshalled into json and bson
+	Comment struct {
+		ID      int    `json:"id" bson:"_id"`
+		Comment string `json:"comment" bson:"comment"`
+	}
+)
+
+// Adapted from https://github.com/swhite24/go-rest-tutorial/blob/master/models/user.go
+type (
+	// Article is a struct which holds details about the articles and can be marshalled into json and bson
+	Article struct {
+		ID   string `json:"id" bson:"_id"`
+		Name string `json:"name" bson:"name"`
+		URL  string `json:"url" bson:"url"`
+	}
+)
+
+type (
+	// User represents the structure of our resource
+	User struct {
+		Id     bson.ObjectId `json:"id" bson:"_id"`
+		Name   string        `json:"name" bson:"name"`
+		Gender string        `json:"gender" bson:"gender"`
+		Age    int           `json:"age" bson:"age"`
+	}
+)
+
+type (
+	// User represents the structure of our resource
+	Theuser struct {
+		Id       bson.ObjectId `json:"id" bson:"_id"`
+		Name     string        `json:"name" bson:"name"`
+		Email    string        `json:"email" bson:"email"`
+		Password string        `json:"password" bson:"password"`
+	}
+)
 
 func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	searchQuery := queries.NewSearchQuery()
@@ -96,7 +133,7 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	}
 	aid = g.title
 
-	comments := []models.Comment{}
+	comments := []Comment{}
 	s := getSession()
 	c := s.DB("heroku_5r938bhv").C(aid)
 	println("com collection found")
@@ -133,7 +170,6 @@ func getSession() *mgo.Session {
 	return s
 }
 
-
 // https://godoc.org/gopkg.in/mgo.v2#Bulk.Insert
 /*func newcomment(ctx *iris.Context) {
 
@@ -142,7 +178,7 @@ func getSession() *mgo.Session {
 	// declare database and collection
 	c := s.DB("heroku_5r938bhv").C("com")
 	// insert into database using model (struct)
-	err := c.Insert(&models.Comment{id,newComment})
+	err := c.Insert(&Comment{id,newComment})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -153,39 +189,45 @@ func getSession() *mgo.Session {
 //http://goinbigdata.com/how-to-build-microservice-with-mongodb-in-golang/
 func getComment(ctx *iris.Context) {
 
-
-	 comments := models.Comment{}
+	comments := Comment{}
 	s := getSession()
 	c := s.DB("heroku_5r938bhv").C("com")
 	println("com collection found")
+
+	println("THIS FIRES BEFORE ERROR IN GET REQUEST....")
+
 	err := c.Find(bson.M{"_id": oid}).One(&comments)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	println(comments.Comment,comments.ID)
+	println(comments.Comment, comments.ID)
+	ctx.Write(comments.Comment, comments.ID)
+
 	oid = id
 	ctx.Next()
 }
+
 func commentHandler(ctx *iris.Context) {
 	commentVal := ctx.FormValue("userComment")
 
-
-
 	newComment := string(commentVal)
 
-	newComment = newComment
+	// newComment = newComment
 
 	// establish session
 	s := getSession()
 	// declare database and collection
 	c := s.DB("heroku_5r938bhv").C(aid)
 	// insert into database using model (struct)
-	err := c.Insert(&models.Comment{id,newComment})
+
+	err := c.Insert(&Comment{id, newComment})
 	if err != nil {
 		log.Fatal(err)
 	}
-	id = id+1
+	id = id + 1
+
 	ctx.Write(string(newComment))
 	ctx.ResetBody()
+
 }

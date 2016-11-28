@@ -4,17 +4,27 @@
 	<title>GO-SPA</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="mystyle.css">
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
 	<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+	<!-- Testing purposes, will need to set refresh times at a later date when fully functional (and remove button) -->
+	<script>
+		$(document).ready(function(){
+			$("button").click(function(){
+				$.ajax({
+					url: "/getcomment", 
+					method: "GET",
+					success: function(result){
+						$("#responseHead").html(result);
+					}
+				});
+			});
+		});
+	</script>
 </head>
 <body>
-
-
-
-
 
 <nav class="navbar-inner">
 	<div class="navbar transparent navbar-inverse navbar-fixed-top">
@@ -152,6 +162,11 @@
 		<div id="bodytext"></div>
 
 		<p><a href={{.Text}}>{{.Text}}</a></p>
+
+		<div class="content">
+			<h3 id="responseHead"></h3>
+			<button>Get Comments Test</button>
+		</div>
 
 		<div class="form-group">
 			<form method="POST" action="/root">
