@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	//"encoding/json"
@@ -32,6 +33,13 @@ func apistuff() {
 	//api.Get(Register)
 	// Create User
 	//api.Get("/user", uc.CreateUser)
+
+	render := func(ctx *iris.Context) {
+		ctx.Render("index.html", nil)
+	}
+
+	// handler registration and naming
+	api.Get("/index", render)("home")
 
 	api.Post("/root", commentHandler)
 	//api.Get("/comment", newcomment)
@@ -171,6 +179,16 @@ func getComment(ctx *iris.Context) {
 	for i := 0; i < len(comments); i++ {
 		println(comments[i].ID, comments[i].Comment)
 	}
+
+	stringVal := &comments
+
+	commentJSON, err := json.Marshal(stringVal)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	println(string(commentJSON)) //  For testing....
+	ctx.Render("index.html", commentJSON)
 
 	oid = id
 	ctx.Next()
