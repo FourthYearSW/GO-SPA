@@ -106,8 +106,15 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	}
 
 	println(len(comments))
-	id = len(comments)
 
+
+	for  i := 0 ; i < len(comments);i++ {
+		println(comments[i].Comment)
+	}
+	//println(comments.Comment,comments.ID)
+
+	id = len(comments)
+	oid = id
 }
 
 func search(ctx *iris.Context) {
@@ -154,16 +161,20 @@ func getSession() *mgo.Session {
 func getComment(ctx *iris.Context) {
 
 
-	 comments := models.Comment{}
+	 //comments := models.Comment{}
+	comments := []models.Comment{}
 	s := getSession()
-	c := s.DB("heroku_5r938bhv").C("com")
+	c := s.DB("heroku_5r938bhv").C(aid)
 	println("com collection found")
-	err := c.Find(bson.M{"_id": oid}).One(&comments)
+	//err := c.Find(bson.M{"_id": oid}).One(&comments)
+	err := c.Find(bson.M{}).All(&comments)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	println(comments.Comment,comments.ID)
+	for  i := 0 ; i < len(comments);i++ {
+		println(comments[i].Comment)
+	}
+	//println(comments.Comment,comments.ID)
 	oid = id
 	ctx.Next()
 }
