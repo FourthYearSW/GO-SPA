@@ -94,7 +94,8 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 		fmt.Println(v.WebTitle)
 	}
 	aid = g.title
-
+	// url = g.weburl
+	// body = g.body
 	comments := []models.Comment{}
 	s := getSession()
 	c := s.DB("heroku_5r938bhv").C(aid)
@@ -105,8 +106,14 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	}
 
 	println(len(comments))
-	id = len(comments)
 
+	for i := 0; i < len(comments); i++ {
+		println(comments[i].Comment)
+	}
+	//println(comments.Comment,comments.ID)
+
+	id = len(comments)
+	oid = id
 }
 
 func search(ctx *iris.Context) {
@@ -160,14 +167,15 @@ func getComment(ctx *iris.Context) {
 		log.Fatal(err)
 	}
 
+	// For test purposes: Prints values retrieved from Heroku, to the console.
 	for i := 0; i < len(comments); i++ {
-		// println(comments.Comment, comments.ID)
-		println(comments[i].Comment, comments[i].ID)
+		println(comments[i].ID, comments[i].Comment)
 	}
 
 	oid = id
 	ctx.Next()
 }
+
 func commentHandler(ctx *iris.Context) {
 	commentVal := ctx.FormValue("userComment")
 
