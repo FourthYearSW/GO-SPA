@@ -18,6 +18,8 @@ var id int
 var oid int
 var aid string
 var newComment string
+var body string
+var url string
 func main() {
 	//uc := controllers.NewUserController(getSession())
 
@@ -95,7 +97,8 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 		fmt.Println(v.WebTitle)
 	}
 	aid = g.title
-
+	url = g.weburl
+	body = g.body
 	comments := []models.Comment{}
 	s := getSession()
 	c := s.DB("heroku_5r938bhv").C(aid)
@@ -197,6 +200,7 @@ func commentHandler(ctx *iris.Context) {
 		log.Fatal(err)
 	}
 	id = id+1
-	ctx.Write(string(newComment))
-	ctx.ResetBody()
+	ctx.Render("index.html", page{aid, ctx.HostString(), body, url})
+	//ctx.Write(string(newComment))
+	//ctx.ResetBody()
 }
