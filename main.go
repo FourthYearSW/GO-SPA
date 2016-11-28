@@ -96,6 +96,8 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 		fmt.Println(v.ID)
 		fmt.Println(v.WebTitle)
 	}
+	var articleID string
+	articleID = g.id
 	aid = g.title
 	url = g.weburl
 	body = g.body
@@ -107,17 +109,38 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	if erro != nil {
 		log.Fatal(err)
 	}
-
 	println(len(comments))
-
-
 	for  i := 0 ; i < len(comments);i++ {
 		println(comments[i].Comment)
 	}
 	//println(comments.Comment,comments.ID)
 
+	println(len(comments))
+	for  i := 0 ; i < len(comments);i++ {
+		println(comments[i].Comment)
+	}
 	id = len(comments)
 	oid = id
+
+	//article := []models.Article{}
+	//errob2 := c.Find(bson.M{}).All(&article)
+	//if errob2 != nil {
+	//	log.Fatal(err)
+	//}
+	//var theidofarticle int
+	s = getSession()
+	_c := s.DB("heroku_5r938bhv").C("Article")
+	//article := []models.Article{}
+	//errob2 := c.Find(bson.M{}).All(&article)
+	//if errob2 != nil {
+	//	log.Fatal(err)
+	//}
+	println("Article collection found")
+	errob := _c.Insert(&models.Article{articleID,aid,url})
+	println("should be inserted")
+	if errob != nil {
+		println(articleID+" Has already exists")
+	}
 }
 
 func search(ctx *iris.Context) {

@@ -8,5 +8,6 @@ type (
 		ID   string `json:"id" bson:"_id"`
 		Name string `json:"name" bson:"name"`
 		URL  string `json:"url" bson:"url"`
+
 	}
 )
