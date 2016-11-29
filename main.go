@@ -187,8 +187,10 @@ func getComment(ctx *iris.Context) {
 		fmt.Println(err)
 		return
 	}
-	println(string(commentJSON)) //  For testing....
-	ctx.Render("index.html", commentJSON)
+
+	println(string(commentJSON)) //  For testing purposes
+
+	ctx.Data(iris.StatusOK, commentJSON) // Once requested in a GET, sends the commentJSON to the client
 
 	oid = id
 	ctx.Next()

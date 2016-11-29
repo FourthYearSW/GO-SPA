@@ -11,37 +11,37 @@
 	
 	<!-- Testing purposes, will need to set refresh times at a later date when fully functional (and remove button) -->
 	<script>
+
+		// Adapted from http://api.jquery.com/jquery.ajax/
 		$(document).ready(function(){
-			$("button").click(function(){
-				$.ajax({
-					url: "/getcomment", 
-					method: "GET",
-					success: function(result) {
-						$("#responseHead").html(result);
-						document.write(result)
-					}
+			// $("button").click(function(){
+				setTimeout(function(){
+					$.ajax({
+						url: "/getcomment", 
+						method: "GET",
+						success: function(result) {
+							// console.log("This is JSON : " + result) // Console Debug Purposes
+
+							var resultObj = JSON.parse(result); //  Parse the JSON received from server and store in a javascript object
+
+							// console.log("This is javascript Object : " + resultObj.Comment) // Console Debug Purposes
+
+							// Adapted from http://stackoverflow.com/questions/22037062/how-can-we-repeat-the-table-row-in-jquery-like-angularjs-does-with-ng-repeat
+							// For each object value, display each one in a row in the dynamicTable
+							var inHTML = "";
+							var thead = "<thead><tr><th>#</th><th>Comment</th></tr></thead>";
+							$.each(resultObj, function(index, value){
+								
+								var newItem = "<tr><td>" + value.id + "</td><td>" + value.comment + "</td></tr>";
+								inHTML += newItem;  
+							});
+							// $("bodyOfTable").html(thead);
+							$("#bodyOfTable").html(inHTML); //add generated tr html to corresponding table
+						}
+					});
 				});
-			});
+			// });
 		});
-
-
-		// var inHTML = "";
-
-		// $.each(people.persons, function(index, value){
-		// 	var newItem = "<tr><td>"+ value.name + "</td></tr>"
-		// 	inHTML += newItem;  
-		// });
-
-		// $("table#dynamicTable").html(inHTML); //add generated tr html to corresponding table
-
-
-		// wait for the DOM to be loaded 
-        // $(document).ready(function() { 
-        //     // bind 'myForm' and provide a simple callback function 
-        //     $('#myForm').ajaxForm(function() { 
-        //         alert("Thank you for your comment!"); 
-        //     }); 
-        // }); 
 
 	</script>
 </head>
@@ -184,15 +184,24 @@
 
 		<p><a href={{.Text}}>{{.Text}}</a></p>
 
-		<div class="content">
-			<h3 id="responseHead"></h3>
-			<button>Get Comments Test</button>
-		</div>
+		<hr style=" border: 5px solid #000;">
 
-		
-		<!--<table id="dynamicTable">    
-		</table>			-->
-		
+		<div class="jumbotron">
+			<h1>Comments Section</h1>
+		</div>
+			
+		<div class="container">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Comment</th>
+					</tr>
+				</thead>
+				<tbody id="bodyOfTable">
+				</tbody>
+			</table>	
+		</div>
 
 		<div class="form-group">
 			<form method="POST" action="/root">
