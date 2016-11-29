@@ -1,34 +1,33 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
-	//"encoding/json"
-
-
+	"GO-SPA/models"
 	"github.com/guardian/gocapiclient"
 	"github.com/guardian/gocapiclient/queries"
 	"github.com/kataras/iris"
 	"github.com/valyala/fasthttp"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"GO-SPA/models"
 	"time"
 	//"golang.org/x/tools/benchmark/parse"
+
+
 )
+
 var id int
 var oid int
 var aid string
 var newComment string
 var body string
 var url string
+
 func main() {
 	//uc := controllers.NewUserController(getSession())
 
-
 	apistuff()
-
-
 
 }
 func apistuff() {
@@ -38,13 +37,20 @@ func apistuff() {
 	// Create User
 	//api.Get("/user", uc.CreateUser)
 
+	render := func(ctx *iris.Context) {
+		ctx.Render("index.html", nil)
+	}
+
+	// handler registration and naming
+	api.Get("/index", render)("home")
+
 	api.Post("/root", commentHandler)
 	//api.Get("/comment", newcomment)
 	api.Get("/getcomment", getComment)
 
 	api.Build()
 	fsrv := &fasthttp.Server{Handler: api.Router}
-	fsrv.ListenAndServe(":9999")
+	fsrv.ListenAndServe(":8080")
 	apistuff()
 }
 
@@ -101,8 +107,13 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	var articleID string
 	articleID = g.id
 	aid = g.title
+
 	url = g.weburl
 	body = g.body
+
+	// url = g.weburl
+	// body = g.body
+
 	comments := []models.Comment{}
 	s := getSession()
 	c := s.DB("heroku_5r938bhv").C(aid)
@@ -118,6 +129,7 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	//println(comments.Comment,comments.ID)
 
 	println(len(comments))
+
 	for  i := 0 ; i < len(comments);i++ {
 		println(comments[i].Comment)
 	}
@@ -143,6 +155,15 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	if errob != nil {
 		println(articleID+" Has already exists")
 	}
+
+
+	for i := 0; i < len(comments); i++ {
+		println(comments[i].Comment)
+	}
+	//println(comments.Comment,comments.ID)
+
+	id = len(comments)
+	oid = id
 }
 
 func search(ctx *iris.Context) {
@@ -167,7 +188,6 @@ func getSession() *mgo.Session {
 	// Deliver session
 	return s
 }
-
 
 // https://godoc.org/gopkg.in/mgo.v2#Bulk.Insert
 /*func newcomment(ctx *iris.Context) {
@@ -203,13 +223,30 @@ func getComment(ctx *iris.Context) {
 		println(comments[i].Comment)
 	}
 	//println(comments.Comment,comments.ID)
+
+	// For test purposes: Prints values retrieved from Heroku, to the console.
+	for i := 0; i < len(comments); i++ {
+		println(comments[i].ID, comments[i].Comment)
+	}
+
+	stringVal := &comments
+
+	commentJSON, err := json.Marshal(stringVal)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	println(string(commentJSON)) //  For testing purposes
+
+	ctx.Data(iris.StatusOK, commentJSON) // Once requested in a GET, sends the commentJSON to the client
+
 	oid = id
 	ctx.Next()
 }
+
 func commentHandler(ctx *iris.Context) {
 	commentVal := ctx.FormValue("userComment")
-
-
 
 	newComment := string(commentVal)
 
@@ -222,13 +259,20 @@ func commentHandler(ctx *iris.Context) {
 	// declare database and collection
 	c := s.DB("heroku_5r938bhv").C(aid)
 	// insert into database using model (struct)
-	err := c.Insert(&models.Comment{nano.Format("20060102150405"),newComment})
-	if err != nil {
-		log.Fatal(err)
+	errs := c.Insert(&models.Comment{nano.Format("20060102150405"),newComment})
+	if errs != nil {
+		log.Fatal(errs)
 	}
 	println("nano time inserted" )
 //	id = id+1
 	ctx.Render("index.html", page{aid, ctx.HostString(), body, url})
 	//ctx.Write(string(newComment))
 	//ctx.ResetBody()
+
+	id = id + 1
+	client := gocapiclient.NewGuardianContentClient("https://content.guardianapis.com/", "b1b1f668-8a1f-40ec-af20-01687425695c")
+	g := &GuardianAPI{}
+	searchQuery(client, g)
+
+	ctx.Render("index.html", page{g.title, ctx.HostString(), g.body, g.weburl})
 }
