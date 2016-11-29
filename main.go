@@ -216,7 +216,4 @@ func commentHandler(ctx *iris.Context) {
 	searchQuery(client, g)
 
 	ctx.Render("index.html", page{g.title, ctx.HostString(), g.body, g.weburl})
-	//iris.Get("/", search)
-	//ctx.Write(string(newComment))
-	//ctx.ResetBody()
 }
