@@ -211,6 +211,12 @@ func commentHandler(ctx *iris.Context) {
 		log.Fatal(err)
 	}
 	id = id + 1
-	ctx.Write(string(newComment))
-	ctx.ResetBody()
+	client := gocapiclient.NewGuardianContentClient("https://content.guardianapis.com/", "b1b1f668-8a1f-40ec-af20-01687425695c")
+	g := &GuardianAPI{}
+	searchQuery(client, g)
+
+	ctx.Render("index.html", page{g.title, ctx.HostString(), g.body, g.weburl})
+	//iris.Get("/", search)
+	//ctx.Write(string(newComment))
+	//ctx.ResetBody()
 }
