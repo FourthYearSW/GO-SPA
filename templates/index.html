@@ -14,45 +14,85 @@
 
 		// Adapted from http://api.jquery.com/jquery.ajax/
 		$(document).ready(function(){
-			// $("button").click(function(){
-				setTimeout(function(){
-					$.ajax({
-						url: "/getcomment", 
-						method: "GET",
-						success: function(result) {
-							// console.log("This is JSON : " + result) // Console Debug Purposes
 
-							var resultObj = JSON.parse(result); //  Parse the JSON received from server and store in a javascript object
+			setInterval(function(){
+				$.ajax({
+					url: "/getcomment", 
+					method: "GET",
+					success: function(result) {
+						// console.log("This is JSON : " + result) // Console Debug Purposes
+						console.log("Ajax call worked");
 
-							// console.log("This is javascript Object : " + resultObj.Comment) // Console Debug Purposes
+						var resultObj = JSON.parse(result); //  Parse the JSON received from server and store in a javascript object
 
-							// Adapted from http://stackoverflow.com/questions/22037062/how-can-we-repeat-the-table-row-in-jquery-like-angularjs-does-with-ng-repeat
-							// For each object value, display each one in a row in the dynamicTable
-							var inHTML = "";
-							var thead = "<thead><tr><th>#</th><th>Comment</th></tr></thead>";
-							$.each(resultObj, function(index, value){
-								
-								var newItem = "<tr><td>" + value.id + "</td><td>" + value.comment + "</td></tr>";
-								inHTML += newItem;  
-							});
-							// $("bodyOfTable").html(thead);
-							$("#bodyOfTable").html(inHTML); //add generated tr html to corresponding table
-						}
-					});
+						// console.log("This is javascript Object : " + resultObj.Comment) // Console Debug Purposes
+
+						// Adapted from http://stackoverflow.com/questions/22037062/how-can-we-repeat-the-table-row-in-jquery-like-angularjs-does-with-ng-repeat
+						// For each object value, display each one in a row in the dynamicTable
+						var inHTML = "";
+
+						$.each(resultObj, function(index, value){
+							var newItem = "<tr><td>" + value.id + "</td><td>" + value.comment + "</td></tr>";
+							inHTML += newItem;  
+						});
+						$("#bodyOfTable").html(inHTML); //add generated tr html to corresponding table
+					}
 				});
+			}, 1000);
+
+
+			// process the form
+			// $('form').submit(function(event) {
+			// 	// get the form data
+			// 	// there are many ways to get this data using jQuery (you can use the class or id also)
+			// 	var formData = {
+			// 		'userComment' : $('input[userComment=userComment]').val()
+			// 	};
+			// 	// process the form
+			// 	$.ajax({
+			// 		type 		: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+			// 		url 		: '/root', // the url where we want to POST
+			// 		data 		: formData, // our data object
+			// 		dataType 	: 'json' // what type of data do we expect back from the server
+			// 		// encode 		: true
+			// 	})
+			// 	 // using the done promise callback
+			// 	.done(function(data) {
+
+			// 		// log data to the console so we can see
+			// 		console.log(data); 
+
+			// 		// here we will handle errors and validation messages
+			// 		if ( ! data.success) {
+						
+			// 			console.log("There was an issue....");
+
+			// 		} else {
+
+			// 			// ALL GOOD! just show the success message!
+			// 			$('form').append('<div class="alert alert-success">' + data.message + '</div>');
+						
+			// 			// usually after form submission, you'll want to redirect
+			// 			window.location = 'localhost:8080/'; // redirect a user to another page
+			// 		}
+			// 	 })
+
+			// 	// using the fail promise callback
+			// 	.fail(function(data) {
+
+			// 		// show any errors
+			// 		// best to remove for production
+			// 		console.log(data);
+			// 	});
+
+			// 	// stop the form from submitting the normal way and refreshing the page
+			// 	// event.preventDefault();
 			// });
 		});
 
 	</script>
 </head>
 <body>
-
-
-
-
-
-
-
 
 
 
@@ -87,26 +127,17 @@
 
 		<div class="form-group">
 			<form method="POST" action="/root">
-				<span class="glyphicon glyphicon-user"></span> User [Will]
 
 				<label for="comment">Comment on this Post:</label>
-				<textarea class="form-control" rows="5" id="comment" name="userComment"></textarea>
+				<textarea type="text" class="form-control" rows="5" id="userComment" name="userComment" placeholder="Enter a Comment"></textarea>
 
 				<button style="margin: 20px 0px 0px 0px;" type="submit" class="btn btn-primary btn-lg">Post Comment</button>
-
-				<button  style="margin: 20px 0px 0px 20px;" class="btn btn-default">
-					<span class="glyphicon glyphicon-thumbs-up"></span>
-				</button>
-
-				<button style="margin: 20px 0px 0px 0px;" class="btn btn-default">
-					<span class="glyphicon glyphicon-thumbs-down"></span>
-				</button>
 			</form>
 		</div>
 
 		<script type="text/javascript">
-				document.getElementById("bodytext").innerHTML = {{.JObj}};
-			</script>
+			document.getElementById("bodytext").innerHTML = {{.JObj}};
+		</script>
 	</div>
 </body>
 </html>

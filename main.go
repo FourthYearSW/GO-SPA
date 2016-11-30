@@ -1,21 +1,21 @@
 package main
 
 import (
+	"GO-SPA/models"
 	"encoding/json"
 	"fmt"
 	"log"
-	"GO-SPA/models"
+	"time"
+
 	"github.com/guardian/gocapiclient"
 	"github.com/guardian/gocapiclient/queries"
 	"github.com/kataras/iris"
 	"github.com/valyala/fasthttp"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"time"
 	//"golang.org/x/tools/benchmark/parse"
-
-
 )
+
 // Declaring variables for future use
 var aid string
 var body string
@@ -31,7 +31,6 @@ func main() {
 func apistuff() {
 	api := iris.New()
 	api.Get("/", search)
-
 
 	render := func(ctx *iris.Context) {
 		ctx.Render("index.html", nil)
@@ -126,10 +125,10 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 
 	s = getSession()
 	_c := s.DB("heroku_5r938bhv").C("Article")
-	errob := _c.Insert(&models.Article{articleID,aid,url})
+	errob := _c.Insert(&models.Article{articleID, aid, url})
 	println("should be inserted")
 	if errob != nil {
-		println(articleID+" Has already exists")
+		println(articleID + " Has already exists")
 	}
 }
 
@@ -157,7 +156,6 @@ func getSession() *mgo.Session {
 }
 
 // https://godoc.org/gopkg.in/mgo.v2#Bulk.Insert
-
 
 //http://goinbigdata.com/how-to-build-microservice-with-mongodb-in-golang/
 func getComment(ctx *iris.Context) {
@@ -189,7 +187,7 @@ func commentHandler(ctx *iris.Context) {
 	// declare database and collection
 	c := s.DB("heroku_5r938bhv").C(aid)
 	// insert into database using model (struct)
-	errs := c.Insert(&models.Comment{nano.Format("20060102150405"),newComment})
+	errs := c.Insert(&models.Comment{nano.Format("20060102150405"), newComment})
 	if errs != nil {
 		log.Fatal(errs)
 	}
@@ -197,5 +195,4 @@ func commentHandler(ctx *iris.Context) {
 	client := gocapiclient.NewGuardianContentClient("https://content.guardianapis.com/", "b1b1f668-8a1f-40ec-af20-01687425695c")
 	g := &GuardianAPI{}
 	searchQuery(client, g)
-	ctx.Render("index.html", page{g.title, ctx.HostString(), g.body, g.weburl})
 }
