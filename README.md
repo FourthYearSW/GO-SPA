@@ -7,8 +7,7 @@ To use the application user must to follow next steps:
 1. Establish GO environment on local machine
 2. Include go packages assosiated to the application
 3. Download application
-4. Build application
-5. Use it.
+4. Run
 
 ###Establish Go environment on local machine
 
@@ -27,7 +26,44 @@ Packages need to be installed:
 
 To include all packages for GO-SPA you need command
 
-```go get <package address>```
+```
+go get <package address>
+```
 
 for all dependencies.
 
+###Download Application
+
+To install application:
+
+1. Using command prompt
+  * cd %GOPATH%\src - for WINDOWS
+  * cd $GOPATH/src  - for LINUX
+2. You need to clone it from remote repository - https://github.com/FourthYearSW/GO-SPA
+
+```
+git clone https://github.com/FourthYearSW/GO-SPA
+```
+
+###Run Application
+
+To run application you need to go to the application root directory
+
+```
+cd %GOPATH%\src\GO-SPA  #for WINDOWS
+cd $GOPATH/src/GO-SPA   #for LINUX
+```
+
+then command
+
+```
+go run main.go
+```
+
+In the browser's address bar type
+
+```
+127.0.0.1:8080
+```
+
+and discus the article with other participants. 
