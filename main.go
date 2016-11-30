@@ -22,12 +22,10 @@ var body string
 var url string
 
 func main() {
-	//uc := controllers.NewUserController(getSession())
-
-	//
 	apistuff()
 
 }
+
 func apistuff() {
 	api := iris.New()
 	api.Get("/", search)
@@ -64,9 +62,15 @@ type GuardianAPI struct {
 	body   string
 }
 
+// adopted from https://github.com/guardian/gocapiclient
+// this method is building query string and  getting back json object with result
+// result is converting and transferring into front page
 func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
+
+	// NewSearchQuery used to create instance of query factory
 	searchQuery := queries.NewSearchQuery()
 
+	// fields filters query result
 	showParam := queries.StringParam{"q", "tech%20AND%20technology"}
 	showSection := queries.StringParam{"section", "technology"}
 	showPages := queries.StringParam{"page", "1"}
@@ -76,17 +80,20 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	showFields := queries.StringParam{"show-fields", "body"}
 	params := []queries.Param{showPages, showPageSize, showOrderBy, showTotal, showFields, showParam, showSection}
 
+	// assign parameters with values for the query fields
 	searchQuery.Params = params
 
+	// get result with json object
 	err := client.GetResponse(searchQuery)
-
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// debug
 	fmt.Println(searchQuery.Response.Status)
 	fmt.Println(searchQuery.Response.Total)
 
+	// run through the response and assign the result to the structured names
 	for i, v := range searchQuery.Response.Results {
 		if i == 0 {
 			g.title = v.WebTitle
@@ -96,6 +103,7 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 			g.body = *v.Fields.Body
 			fmt.Println(i)
 		}
+		// debug result
 		fmt.Println(v.ID)
 		fmt.Println(v.WebTitle)
 	}
@@ -123,6 +131,7 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 		log.Fatal(err)
 	}
 
+	// connect to the MongoDB and store the current article to the db
 	s = getSession()
 	_c := s.DB("heroku_5r938bhv").C("Article")
 	errob := _c.Insert(&models.Article{articleID, aid, url})
@@ -132,6 +141,9 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	}
 }
 
+
+// This handlefunc getting the content from Guardian.com web source
+// and rendering the result to the index.html page
 func search(ctx *iris.Context) {
 	client := gocapiclient.NewGuardianContentClient("https://content.guardianapis.com/", "b1b1f668-8a1f-40ec-af20-01687425695c")
 	g := &GuardianAPI{}

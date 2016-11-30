@@ -7,7 +7,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" project-jdk-name="Go 1.7.3" project-jdk-type="Go SDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" project-jdk-name="Go 1.7.3" project-jdk-type="Go SDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
   <component name="masterDetails">
     <states>
       <state key="GlobalLibrariesConfigurable.UI">
