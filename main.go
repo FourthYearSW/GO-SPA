@@ -16,25 +16,21 @@ import (
 	//"golang.org/x/tools/benchmark/parse"
 )
 
-var id int
-var oid int
+// Declaring variables for future use
 var aid string
-var newComment string
 var body string
 var url string
 
 func main() {
 	//uc := controllers.NewUserController(getSession())
 
+	//
 	apistuff()
 
 }
 func apistuff() {
 	api := iris.New()
 	api.Get("/", search)
-	//api.Get(Register)
-	// Create User
-	//api.Get("/user", uc.CreateUser)
 
 	render := func(ctx *iris.Context) {
 		ctx.Render("index.html", nil)
@@ -78,7 +74,7 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	showOrderBy := queries.StringParam{"order-by", "newest"}
 	showTotal := queries.StringParam{"total", "1"}
 	showFields := queries.StringParam{"show-fields", "body"}
-	params := []queries.Param{showParam, showSection, showPages, showPageSize, showOrderBy, showTotal, showFields}
+	params := []queries.Param{showPages, showPageSize, showOrderBy, showTotal, showFields, showParam, showSection}
 
 	searchQuery.Params = params
 
@@ -103,65 +99,37 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 		fmt.Println(v.ID)
 		fmt.Println(v.WebTitle)
 	}
+	// Declaring string variable
 	var articleID string
+
+	// Setting variables to API values retrieved
 	articleID = g.id
 	aid = g.title
-
 	url = g.weburl
 	body = g.body
 
-	// url = g.weburl
-	// body = g.body
-
+	// Initialize and devlare an array of structs
+	// models are used to store structs
 	comments := []models.Comment{}
+	//
 	s := getSession()
+	// Declares the database name and collection name
+	// that the connection should be made to
 	c := s.DB("heroku_5r938bhv").C(aid)
-	println("com collection found")
+	// Find and all will retrieve all comments in the
+	// collection stated above
 	erro := c.Find(bson.M{}).All(&comments)
 	if erro != nil {
 		log.Fatal(err)
 	}
-	println(len(comments))
-	for i := 0; i < len(comments); i++ {
-		println(comments[i].Comment)
-	}
-	//println(comments.Comment,comments.ID)
 
-	println(len(comments))
-
-	for i := 0; i < len(comments); i++ {
-		println(comments[i].Comment)
-	}
-	id = len(comments)
-	oid = id
-
-	//article := []models.Article{}
-	//errob2 := c.Find(bson.M{}).All(&article)
-	//if errob2 != nil {
-	//	log.Fatal(err)
-	//}
-	//var theidofarticle int
 	s = getSession()
 	_c := s.DB("heroku_5r938bhv").C("Article")
-	//article := []models.Article{}
-	//errob2 := c.Find(bson.M{}).All(&article)
-	//if errob2 != nil {
-	//	log.Fatal(err)
-	//}
-	println("Article collection found")
 	errob := _c.Insert(&models.Article{articleID, aid, url})
 	println("should be inserted")
 	if errob != nil {
 		println(articleID + " Has already exists")
 	}
-
-	for i := 0; i < len(comments); i++ {
-		println(comments[i].Comment)
-	}
-	//println(comments.Comment,comments.ID)
-
-	id = len(comments)
-	oid = id
 }
 
 func search(ctx *iris.Context) {
@@ -188,69 +156,32 @@ func getSession() *mgo.Session {
 }
 
 // https://godoc.org/gopkg.in/mgo.v2#Bulk.Insert
-/*func newcomment(ctx *iris.Context) {
-
-	// establish session
-	s := getSession()
-	// declare database and collection
-	c := s.DB("heroku_5r938bhv").C("com")
-	// insert into database using model (struct)
-	err := c.Insert(&models.Comment{id,newComment})
-	if err != nil {
-		log.Fatal(err)
-	}
-	id = id+1
-	ctx.Next()
-}*/
 
 //http://goinbigdata.com/how-to-build-microservice-with-mongodb-in-golang/
 func getComment(ctx *iris.Context) {
 
-	//comments := models.Comment{}
 	comments := []models.Comment{}
 	s := getSession()
 	c := s.DB("heroku_5r938bhv").C(aid)
-	println("com collection found")
-	//err := c.Find(bson.M{"_id": oid}).One(&comments)
 	err := c.Find(bson.M{}).All(&comments)
 	if err != nil {
 		log.Fatal(err)
 	}
-	for i := 0; i < len(comments); i++ {
-		println(comments[i].Comment)
-	}
-	//println(comments.Comment,comments.ID)
-
-	// For test purposes: Prints values retrieved from Heroku, to the console.
-	for i := 0; i < len(comments); i++ {
-		println(comments[i].ID, comments[i].Comment)
-	}
-
 	stringVal := &comments
-
 	commentJSON, err := json.Marshal(stringVal)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
-	println(string(commentJSON)) //  For testing purposes
-
-	oid = id
-	ctx.Next()
-
 	ctx.Data(iris.StatusOK, commentJSON) // Once requested in a GET, sends the commentJSON to the client
+	ctx.Next()
 }
 
 func commentHandler(ctx *iris.Context) {
 	commentVal := ctx.FormValue("userComment")
-
 	newComment := string(commentVal)
-
 	newComment = newComment
-	//StampNano  = "Jan _2 15:04:05.000000000"
 	nano := time.Now()
-	//id := fmt.Sprintf("%s", nano)
 	// establish session
 	s := getSession()
 	// declare database and collection
@@ -260,13 +191,7 @@ func commentHandler(ctx *iris.Context) {
 	if errs != nil {
 		log.Fatal(errs)
 	}
-	println("nano time inserted")
-	//	id = id+1
 	ctx.Render("index.html", page{aid, ctx.HostString(), body, url})
-	//ctx.Write(string(newComment))
-	//ctx.ResetBody()
-
-	id = id + 1
 	client := gocapiclient.NewGuardianContentClient("https://content.guardianapis.com/", "b1b1f668-8a1f-40ec-af20-01687425695c")
 	g := &GuardianAPI{}
 	searchQuery(client, g)
