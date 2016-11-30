@@ -1,20 +1,19 @@
 package main
 
 import (
+	"GO-SPA/models"
 	"encoding/json"
 	"fmt"
 	"log"
-	"GO-SPA/models"
+	"time"
+
 	"github.com/guardian/gocapiclient"
 	"github.com/guardian/gocapiclient/queries"
 	"github.com/kataras/iris"
 	"github.com/valyala/fasthttp"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"time"
 	//"golang.org/x/tools/benchmark/parse"
-
-
 )
 
 var id int
@@ -72,14 +71,14 @@ type GuardianAPI struct {
 func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	searchQuery := queries.NewSearchQuery()
 
-	//showParam := queries.StringParam{"q", "tech%20AND%20technology"}
-	//showSection := queries.StringParam{"section", "technology"}
+	showParam := queries.StringParam{"q", "tech%20AND%20technology"}
+	showSection := queries.StringParam{"section", "technology"}
 	showPages := queries.StringParam{"page", "1"}
 	showPageSize := queries.StringParam{"page-seze", "1"}
 	showOrderBy := queries.StringParam{"order-by", "newest"}
 	showTotal := queries.StringParam{"total", "1"}
 	showFields := queries.StringParam{"show-fields", "body"}
-	params := []queries.Param{showPages, showPageSize, showOrderBy, showTotal, showFields}
+	params := []queries.Param{showParam, showSection, showPages, showPageSize, showOrderBy, showTotal, showFields}
 
 	searchQuery.Params = params
 
@@ -123,14 +122,14 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 		log.Fatal(err)
 	}
 	println(len(comments))
-	for  i := 0 ; i < len(comments);i++ {
+	for i := 0; i < len(comments); i++ {
 		println(comments[i].Comment)
 	}
 	//println(comments.Comment,comments.ID)
 
 	println(len(comments))
 
-	for  i := 0 ; i < len(comments);i++ {
+	for i := 0; i < len(comments); i++ {
 		println(comments[i].Comment)
 	}
 	id = len(comments)
@@ -150,12 +149,11 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 	//	log.Fatal(err)
 	//}
 	println("Article collection found")
-	errob := _c.Insert(&models.Article{articleID,aid,url})
+	errob := _c.Insert(&models.Article{articleID, aid, url})
 	println("should be inserted")
 	if errob != nil {
-		println(articleID+" Has already exists")
+		println(articleID + " Has already exists")
 	}
-
 
 	for i := 0; i < len(comments); i++ {
 		println(comments[i].Comment)
@@ -208,8 +206,7 @@ func getSession() *mgo.Session {
 //http://goinbigdata.com/how-to-build-microservice-with-mongodb-in-golang/
 func getComment(ctx *iris.Context) {
 
-
-	 //comments := models.Comment{}
+	//comments := models.Comment{}
 	comments := []models.Comment{}
 	s := getSession()
 	c := s.DB("heroku_5r938bhv").C(aid)
@@ -219,7 +216,7 @@ func getComment(ctx *iris.Context) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	for  i := 0 ; i < len(comments);i++ {
+	for i := 0; i < len(comments); i++ {
 		println(comments[i].Comment)
 	}
 	//println(comments.Comment,comments.ID)
@@ -239,10 +236,10 @@ func getComment(ctx *iris.Context) {
 
 	println(string(commentJSON)) //  For testing purposes
 
-	ctx.Data(iris.StatusOK, commentJSON) // Once requested in a GET, sends the commentJSON to the client
-
 	oid = id
 	ctx.Next()
+
+	ctx.Data(iris.StatusOK, commentJSON) // Once requested in a GET, sends the commentJSON to the client
 }
 
 func commentHandler(ctx *iris.Context) {
@@ -252,19 +249,19 @@ func commentHandler(ctx *iris.Context) {
 
 	newComment = newComment
 	//StampNano  = "Jan _2 15:04:05.000000000"
-	 nano := time.Now()
-	 //id := fmt.Sprintf("%s", nano)
+	nano := time.Now()
+	//id := fmt.Sprintf("%s", nano)
 	// establish session
 	s := getSession()
 	// declare database and collection
 	c := s.DB("heroku_5r938bhv").C(aid)
 	// insert into database using model (struct)
-	errs := c.Insert(&models.Comment{nano.Format("20060102150405"),newComment})
+	errs := c.Insert(&models.Comment{nano.Format("20060102150405"), newComment})
 	if errs != nil {
 		log.Fatal(errs)
 	}
-	println("nano time inserted" )
-//	id = id+1
+	println("nano time inserted")
+	//	id = id+1
 	ctx.Render("index.html", page{aid, ctx.HostString(), body, url})
 	//ctx.Write(string(newComment))
 	//ctx.ResetBody()
@@ -273,6 +270,4 @@ func commentHandler(ctx *iris.Context) {
 	client := gocapiclient.NewGuardianContentClient("https://content.guardianapis.com/", "b1b1f668-8a1f-40ec-af20-01687425695c")
 	g := &GuardianAPI{}
 	searchQuery(client, g)
-
-	ctx.Render("index.html", page{g.title, ctx.HostString(), g.body, g.weburl})
 }
