@@ -18,4 +18,16 @@ Very important to configure environment variables for GO. Instructions is [here]
 
 ###Include go packages assosiated to the application
 
-To include all packages for GO-SPA you need to 
+Packages need to be installed:
+
+ * github.com/guardian/gocapiclient
+ * github.com/kataras/iris
+ * github.com/valyala/fasthttp
+ * gopkg.in/mgo.v2
+
+To include all packages for GO-SPA you need command
+
+```go get <package address>```
+
+for all dependencies.
+
