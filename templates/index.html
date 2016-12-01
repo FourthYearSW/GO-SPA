@@ -33,6 +33,8 @@
 			}, 1000);
 		});
 
+		// Function that creates substrings from the date string and separates them out based on d-m-y h:m:s
+		// In the end, create and return a variable that holds the concatenated value complete with separators. 
 		function dateConcatSubSTr(val){
 			var valueId = val;
 			var year = valueId.substring(0, 4);
@@ -79,7 +81,7 @@
 		</div>
 
 		<div class="form-group">
-			<form method="POST" action="/root">
+			<form method="POST" action="/comments">
 				<label for="comment">Comment on this Post:</label>
 				<textarea type="text" class="form-control" rows="5" id="userComment" name="userComment" placeholder="Enter a Comment"></textarea>
 				<button style="margin: 20px 0px 0px 0px;" type="submit" class="btn btn-primary btn-lg">Post Comment</button>

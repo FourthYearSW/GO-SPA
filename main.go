@@ -37,8 +37,8 @@ func apistuff() {
 	// handler registration and naming
 	api.Get("/index", render)("home")
 
-	api.Post("/root", commentHandler)
-	//api.Get("/comment", newcomment)
+	api.Post("/comments", commentHandler)
+
 	api.Get("/getcomment", getComment)
 
 	api.Build()
@@ -140,7 +140,6 @@ func searchQuery(client *gocapiclient.GuardianContentClient, g *GuardianAPI) {
 		println(articleID + " Has already exists")
 	}
 }
-
 
 // This handlefunc getting the content from Guardian.com web source
 // and rendering the result to the index.html page
