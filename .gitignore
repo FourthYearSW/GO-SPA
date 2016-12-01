@@ -3,6 +3,7 @@
 *.o
 *.a
 *.so
+*.iml
 
 # Folders
 _obj
@@ -27,3 +28,4 @@ _testmain.go
 =======
 .idea
 
+GO-SPA.iml
