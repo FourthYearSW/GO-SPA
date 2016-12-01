@@ -1,4 +1,4 @@
-# GO-SPA
+# Deployment Details
 A single page application built with the Go programming language
 
 Application is showing current article retrieved from www.guardian.com and allows the users to discuss the topic.
