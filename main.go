@@ -27,7 +27,11 @@ func main() {
 }
 
 func apistuff() {
+	
+	// Create a new Instance of Iris
 	api := iris.New()
+	
+	// Loads the default root page
 	api.Get("/", search)
 
 	render := func(ctx *iris.Context) {
@@ -36,9 +40,11 @@ func apistuff() {
 
 	// handler registration and naming
 	api.Get("/index", render)("home")
-
+	
+	// Deals with Posting comments on the forum
 	api.Post("/comments", commentHandler)
-
+	
+	// Used in conjunction with a Client side Ajax call, that retrieves comments and returns to front end
 	api.Get("/getcomment", getComment)
 
 	api.Build()
@@ -47,6 +53,7 @@ func apistuff() {
 	apistuff()
 }
 
+// A struct that holds details about whats being displayed on the Client Side 
 type page struct {
 	Title string
 	Host  string
@@ -54,6 +61,7 @@ type page struct {
 	Text  string
 }
 
+// A struct that holds details from the Guardian news API
 type GuardianAPI struct {
 	id     string
 	title  string
